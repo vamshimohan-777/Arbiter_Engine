@@ -1,0 +1,51 @@
+﻿{
+  "policy_id": "REG-US-001",
+  "title": "US Data Sharing Policy",
+  "version": "1.0",
+  "effective_date": "2025-01-01",
+  "expiry_date": null,
+  "region": "US",
+  "department": null,
+  "vendor": null,
+  "dataset": null,
+  "category": "REGIONAL",
+  "supersedes": [],
+  "sections": [
+    {
+      "section_id": "REG-US-001-S1",
+      "clause_type": "RULE",
+      "text": "US-based Dataset Y may be shared with approved vendors who have signed a Business Associate Agreement (BAA) where applicable.",
+      "metadata": {
+        "applies_to_region": "US",
+        "applies_to_dataset": "Dataset Y",
+        "requires": "Business Associate Agreement (BAA)",
+        "condition": "where applicable"
+      }
+    },
+    {
+      "section_id": "REG-US-001-S2",
+      "clause_type": "RULE",
+      "text": "US data transfers to EU-based vendors require Privacy Shield successor framework compliance.",
+      "metadata": {
+        "applies_to_region": "US",
+        "destination_region": "EU",
+        "requires": "Privacy Shield successor framework compliance"
+      }
+    },
+    {
+      "section_id": "REG-US-001-S3",
+      "clause_type": "EXCEPTION",
+      "text": "Analytics department may share Dataset Y with US-based Tier 1 vendors without additional approval.",
+      "metadata": {
+        "applies_to_department": "ANALYTICS",
+        "applies_to_region": "US",
+        "applies_to_dataset": "Dataset Y",
+        "applies_to_vendor_tier": "Tier 1",
+        "vendor_location_required": "US-based",
+        "additional_approval_required": false,
+        "note": "This exception is subject to DS-001-v5-S3 which requires CDO approval for Analytics Dataset Y sharing from 2026-06-01."
+      }
+    }
+  ],
+  "source": "Legal & Compliance — US Regional Office (effective 2025-01-01)"
+}

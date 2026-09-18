@@ -1,0 +1,29 @@
+{
+  "dataset_name": "Arbiter Synthetic Policy Reasoning Corpus v1.0",
+  "generated": "2026-09-18",
+  "purpose": "Training, testing, benchmarking and demo validation for rule-resolution agents.",
+  "design_principle": "Ground truth is generated from explicit fields/templates, not post-hoc LLM guesses.",
+  "files": {
+    "policies.jsonl.gz": 8287,
+    "precedents.jsonl.gz": 25000,
+    "queries.jsonl.gz": 50000,
+    "contrastive_cases.jsonl.gz": 5000,
+    "conflict_pairs.jsonl.gz": 5000
+  },
+  "features_covered": [
+    "basic_resolution",
+    "supersession",
+    "scope",
+    "exception",
+    "conflict",
+    "clarification",
+    "adversarial",
+    "manipulation",
+    "sensitivity",
+    "precedent",
+    "point_in_time",
+    "simulation",
+    "remediation"
+  ],
+  "warning": "Synthetic records are not evidence of real organizational policy and must not be presented as real policies."
+}

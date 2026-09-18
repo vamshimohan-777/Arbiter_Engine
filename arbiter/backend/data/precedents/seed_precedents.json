@@ -1,0 +1,78 @@
+[
+  {
+    "ruling_id": "RULING-2025-001",
+    "question": "Can Analytics share Dataset Y with Vendor X?",
+    "context": {"vendor": "Vendor X", "department": "ANALYTICS", "dataset": "Dataset Y", "region": "INDIA"},
+    "decision": "NOT_PERMITTED",
+    "explanation": "Vendor X is explicitly prohibited from receiving Dataset Y under VR-001 v2 effective June 2025 and DS-001-v4. The restriction applies across all departments and regions with no exceptions.",
+    "citations": [
+      {"policy_id": "VR-001", "policy_title": "Vendor X Hard Prohibition Policy", "text_excerpt": "Vendor X (TechCorp Solutions Ltd) is prohibited from receiving any company data under any circumstances.", "clause_type": "RULE"},
+      {"policy_id": "DS-001-v4", "policy_title": "Data Sharing Policy v4", "text_excerpt": "Vendor X is prohibited from receiving Dataset Y.", "clause_type": "RESTRICTION"}
+    ],
+    "relevant_policy_ids": ["VR-001", "DS-001-v4"],
+    "confidence": 0.98,
+    "caveats": [],
+    "timestamp": "2025-10-15T10:30:00Z"
+  },
+  {
+    "ruling_id": "RULING-2025-002",
+    "question": "Can Finance share Dataset W with Vendor Z?",
+    "context": {"vendor": "Vendor Z", "department": "FINANCE", "dataset": "Dataset W"},
+    "decision": "PERMITTED",
+    "explanation": "Under VR-003, Finance may authorize Vendor Z access to Dataset W for quarterly reporting with CFO approval. CFO approval documented. The exception in VR-003 explicitly permits Finance to grant Vendor Z access to Dataset W subject to CFO sign-off.",
+    "citations": [
+      {"policy_id": "VR-003", "policy_title": "Vendor Z Restriction Policy", "text_excerpt": "Finance department may approve Vendor Z access to Dataset W for quarterly reporting subject to CFO written approval.", "clause_type": "EXCEPTION"},
+      {"policy_id": "DEPT-FINANCE-001", "policy_title": "Finance Department Data Sharing Rules", "text_excerpt": "The Finance department may share Dataset W with approved financial service vendors for audit and reporting purposes.", "clause_type": "RULE"}
+    ],
+    "relevant_policy_ids": ["VR-003", "DEPT-FINANCE-001"],
+    "confidence": 0.95,
+    "caveats": ["Requires CFO written approval before transfer"],
+    "timestamp": "2025-11-02T14:15:00Z"
+  },
+  {
+    "ruling_id": "RULING-2026-001",
+    "question": "Can Analytics share Dataset Y with Vendor Y in EU?",
+    "context": {"vendor": "Vendor Y", "department": "ANALYTICS", "dataset": "Dataset Y", "region": "EU"},
+    "decision": "PERMITTED",
+    "explanation": "Vendor Y is Tier 1 approved (VR-002). EU data requires SCC per REG-EU-001. Analytics sharing of Dataset Y requires CDO express written approval per DS-001-v5. With SCC in place and CDO written approval obtained, sharing is permitted.",
+    "citations": [
+      {"policy_id": "VR-002", "policy_title": "Vendor Y Tier 1 Approval", "text_excerpt": "Vendor Y (DataSync Partners AG) holds Tier 1 Approved Partner status.", "clause_type": "RULE"},
+      {"policy_id": "REG-EU-001", "policy_title": "EU GDPR Data Sharing Requirements", "text_excerpt": "Transfers to non-EEA vendors require SCCs or BCRs.", "clause_type": "RULE"},
+      {"policy_id": "DS-001-v5", "policy_title": "Data Sharing Policy v5", "text_excerpt": "Sharing of Dataset Y with Tier 1 approved vendors requires CDO express written approval.", "clause_type": "RULE"}
+    ],
+    "relevant_policy_ids": ["VR-002", "REG-EU-001", "DS-001-v5"],
+    "confidence": 0.92,
+    "caveats": ["SCC must be executed before transfer", "CDO written approval required"],
+    "timestamp": "2026-07-01T09:00:00Z"
+  },
+  {
+    "ruling_id": "RULING-2026-002",
+    "question": "Can Engineering share Dataset Y with Vendor X for testing?",
+    "context": {"vendor": "Vendor X", "department": "ENGINEERING", "dataset": "Dataset Y"},
+    "decision": "NOT_PERMITTED",
+    "explanation": "VR-001 prohibits Vendor X from receiving Dataset Y across ALL departments and use cases regardless of purpose. Engineering exceptions under DEPT-ENGINEERING-001 apply only to anonymized data with non-restricted vendors. The testing exception does not override the hard Vendor X prohibition.",
+    "citations": [
+      {"policy_id": "VR-001", "policy_title": "Vendor X Hard Prohibition Policy", "text_excerpt": "Vendor X (TechCorp Solutions Ltd) is prohibited from receiving any company data under any circumstances. This restriction may not be waived.", "clause_type": "RULE"},
+      {"policy_id": "DEPT-ENGINEERING-001", "policy_title": "Engineering Department Data Sharing Rules", "text_excerpt": "All external data sharing by Engineering must use synthetic or anonymized datasets with approved non-restricted vendors only.", "clause_type": "RULE"}
+    ],
+    "relevant_policy_ids": ["VR-001", "DEPT-ENGINEERING-001"],
+    "confidence": 0.99,
+    "caveats": [],
+    "timestamp": "2026-08-15T11:45:00Z"
+  },
+  {
+    "ruling_id": "RULING-2026-003",
+    "question": "Can Analytics share Dataset Z with Vendor Y?",
+    "context": {"vendor": "Vendor Y", "department": "ANALYTICS", "dataset": "Dataset Z"},
+    "decision": "PERMITTED",
+    "explanation": "Vendor Y holds Tier 1 Approved Partner status (VR-002). Dataset Z may be shared with Tier 1 vendors without additional approval per DS-002-v2. No restrictions apply to the Analytics + Vendor Y + Dataset Z combination.",
+    "citations": [
+      {"policy_id": "VR-002", "policy_title": "Vendor Y Tier 1 Approval", "text_excerpt": "Vendor Y (DataSync Partners AG) holds Tier 1 Approved Partner status and may receive all categories of data subject to standard data sharing agreements.", "clause_type": "RULE"},
+      {"policy_id": "DS-002-v2", "policy_title": "Dataset Z Sharing Policy v2", "text_excerpt": "Dataset Z may be shared with Tier 1 Approved Vendors without additional approval.", "clause_type": "RULE"}
+    ],
+    "relevant_policy_ids": ["VR-002", "DS-002-v2"],
+    "confidence": 0.93,
+    "caveats": ["Standard data sharing agreement (DSA) must be in place"],
+    "timestamp": "2026-09-01T10:00:00Z"
+  }
+]

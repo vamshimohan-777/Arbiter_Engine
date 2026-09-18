@@ -1,0 +1,52 @@
+﻿{
+  "policy_id": "DS-002-v2",
+  "title": "Dataset Z Sharing Policy",
+  "version": "2.0",
+  "effective_date": "2026-07-01",
+  "expiry_date": null,
+  "region": null,
+  "department": null,
+  "vendor": null,
+  "dataset": "Dataset Z",
+  "category": "DATA_SHARING",
+  "supersedes": ["DS-002-v1"],
+  "sections": [
+    {
+      "section_id": "DS-002-v2-S1",
+      "clause_type": "RULE",
+      "text": "Dataset Z may be shared with Tier 1 Approved Vendors only. Tier 2 Vendor access has been deprecated.",
+      "metadata": {
+        "applies_to_dataset": "Dataset Z",
+        "permitted_vendor_tiers": ["Tier 1"],
+        "deprecated_tiers": ["Tier 2"],
+        "change_from_v1": "Tier 2 access removed"
+      }
+    },
+    {
+      "section_id": "DS-002-v2-S2",
+      "clause_type": "RULE",
+      "text": "Vendor Z is reclassified to Tier 2 status and may no longer receive Dataset Z without explicit Finance approval.",
+      "metadata": {
+        "applies_to_vendor": "Vendor Z",
+        "applies_to_dataset": "Dataset Z",
+        "vendor_z_new_tier": "Tier 2",
+        "approval_required": true,
+        "approver": "Finance department",
+        "cross_reference": "VR-003"
+      }
+    },
+    {
+      "section_id": "DS-002-v2-S3",
+      "clause_type": "EXCEPTION",
+      "text": "Vendor Y, as a Tier 1 vendor, retains unrestricted access to Dataset Z.",
+      "metadata": {
+        "applies_to_vendor": "Vendor Y",
+        "applies_to_dataset": "Dataset Z",
+        "vendor_y_tier": "Tier 1",
+        "access_type": "unrestricted",
+        "cross_reference": "VR-002"
+      }
+    }
+  ],
+  "source": "Data Governance Office — Dataset Z Policy v2.0 (effective 2026-07-01, supersedes DS-002-v1)"
+}

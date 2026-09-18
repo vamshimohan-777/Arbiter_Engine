@@ -1,0 +1,34 @@
+{
+  "policy_id": "DS-001-v3",
+  "title": "Data Sharing Policy",
+  "version": "3.0",
+  "effective_date": "2025-01-01",
+  "expiry_date": "2025-12-31",
+  "region": "GLOBAL",
+  "department": null,
+  "vendor": null,
+  "dataset": "Dataset Y",
+  "category": "DATA_SHARING",
+  "supersedes": ["DS-001-v2"],
+  "sections": [
+    {
+      "section_id": "DS001v3-S1",
+      "clause_type": "RULE",
+      "text": "Approved vendors may receive Dataset Y subject to standard data transfer agreements.",
+      "metadata": {}
+    },
+    {
+      "section_id": "DS001v3-S2",
+      "clause_type": "RULE",
+      "text": "All data sharing requests must be logged in the Data Governance Register.",
+      "metadata": {}
+    },
+    {
+      "section_id": "DS001v3-S3",
+      "clause_type": "DEFINITION",
+      "text": "Approved Vendor means any vendor on the current Approved Vendor Registry maintained by Procurement.",
+      "metadata": {}
+    }
+  ],
+  "source": "Policy Registry v3.0 (2025-Q1)"
+}

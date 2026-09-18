@@ -1,0 +1,28 @@
+{
+  "policy_id": "VR-001-v1",
+  "title": "Vendor X Monitoring Policy",
+  "version": "1.0",
+  "effective_date": "2025-01-01",
+  "expiry_date": "2025-05-31",
+  "region": null,
+  "department": null,
+  "vendor": "Vendor X",
+  "dataset": "Dataset Y",
+  "category": "VENDOR_MANAGEMENT",
+  "supersedes": [],
+  "sections": [
+    {
+      "section_id": "VR001v1-S1",
+      "clause_type": "RULE",
+      "text": "Vendor X is subject to enhanced monitoring. Dataset Y access requires additional oversight documentation.",
+      "metadata": {}
+    },
+    {
+      "section_id": "VR001v1-S2",
+      "clause_type": "RULE",
+      "text": "Vendor X may receive Dataset Y under enhanced monitoring conditions with written approval from the Data Governance team.",
+      "metadata": {}
+    }
+  ],
+  "source": "Vendor Management Register 2025"
+}

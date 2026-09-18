@@ -1,0 +1,41 @@
+﻿{
+  "policy_id": "CONFLICT-001",
+  "title": "Analytics Vendor Exception Override",
+  "version": "1.0",
+  "effective_date": "2026-05-01",
+  "expiry_date": null,
+  "region": null,
+  "department": "ANALYTICS",
+  "vendor": "Vendor X",
+  "dataset": null,
+  "category": "DEPT_SPECIFIC",
+  "supersedes": [],
+  "sections": [
+    {
+      "section_id": "CONFLICT-001-S1",
+      "clause_type": "OVERRIDE",
+      "text": "INTENTIONAL CONFLICT FOR TESTING: The Analytics Director may approve Vendor X access to Dataset Z on a project-by-project basis.",
+      "metadata": {
+        "conflict_marker": true,
+        "conflicts_with": ["VR-001"],
+        "applies_to_department": "ANALYTICS",
+        "applies_to_vendor": "Vendor X",
+        "applies_to_dataset": "Dataset Z",
+        "approver": "Analytics Director",
+        "approval_basis": "project-by-project",
+        "scanner_note": "This OVERRIDE conflicts with VR-001 which broadly restricts Vendor X from all data access."
+      }
+    },
+    {
+      "section_id": "CONFLICT-001-S2",
+      "clause_type": "EXCEPTION",
+      "text": "This applies only to Dataset Z, not Dataset Y.",
+      "metadata": {
+        "applies_to_dataset": "Dataset Z",
+        "excluded_datasets": ["Dataset Y"],
+        "scanner_note": "Even if this override were valid, Dataset Y remains prohibited for Vendor X under VR-001 and DS-001-v5."
+      }
+    }
+  ],
+  "source": "Analytics Department — Experimental Exception Policy v1.0 (CONFLICT DOCUMENT — for policy scanner testing)"
+}

@@ -1,0 +1,235 @@
+﻿{
+  "test_suite": "Arbiter Policy Reasoning Demo Scenarios",
+  "version": "1.0",
+  "created_date": "2026-09-18",
+  "scenarios": [
+    {
+      "scenario_id": "DEMO-001",
+      "name": "Hard Vendor Block — Vendor X + Dataset Y",
+      "description": "The clearest NOT_PERMITTED case. Vendor X is blocked from Dataset Y by both a global policy and a dedicated vendor restriction policy.",
+      "question": "Can the Analytics department share Dataset Y with Vendor X?",
+      "context": {
+        "vendor": "Vendor X",
+        "department": "ANALYTICS",
+        "dataset": "Dataset Y",
+        "region": null,
+        "as_of_date": null
+      },
+      "expected_decision": "NOT_PERMITTED",
+      "expected_features_triggered": [
+        "hard_vendor_block",
+        "non_waivable_restriction",
+        "cross_policy_corroboration",
+        "no_remediation_path"
+      ],
+      "expected_citations": ["VR-001", "DS-001-v5"],
+      "expected_reasoning_notes": "VR-001 prohibits Vendor X from Dataset Y across all departments. DS-001-v5-S2 reiterates this as non-waivable. No exception or waiver process can override. WAI-DGC-001 explicitly excludes non-waivable policies.",
+      "scanner_conflicts": ["CONFLICT-003 creates apparent emergency loophole but is overridden by non-waivable clause"]
+    },
+    {
+      "scenario_id": "DEMO-002",
+      "name": "Version History Query — 2024 vs 2026",
+      "description": "Tests temporal reasoning. Vendor X was permitted in 2024 but prohibited from 2025-06-01 onward.",
+      "question": "Was Vendor X permitted to receive Dataset Y on March 1, 2024?",
+      "context": {
+        "vendor": "Vendor X",
+        "department": null,
+        "dataset": "Dataset Y",
+        "region": null,
+        "as_of_date": "2024-03-01"
+      },
+      "expected_decision": "PERMITTED",
+      "expected_features_triggered": [
+        "temporal_policy_resolution",
+        "historical_version_lookup",
+        "version_supersession_chain"
+      ],
+      "expected_citations": ["DS-001-v2"],
+      "expected_reasoning_notes": "On 2024-03-01, DS-001-v2 was the active policy (effective 2024-01-01, expiry 2024-12-31). DS-001-v2-S2 explicitly states no specific vendor restrictions; all approved vendors may access Dataset Y. VR-001-v1 did not exist yet. Therefore, Vendor X access was permitted under DS-001-v2.",
+      "scanner_conflicts": []
+    },
+    {
+      "scenario_id": "DEMO-003",
+      "name": "Policy Supersession Chain — DS-001 v3 to v5",
+      "description": "Tests supersession chain navigation. Current policy (v5) supersedes v4 which superseded v3.",
+      "question": "What is the current Dataset Y sharing policy for approved vendors?",
+      "context": {
+        "vendor": null,
+        "department": null,
+        "dataset": "Dataset Y",
+        "region": null,
+        "as_of_date": null
+      },
+      "expected_decision": "PERMITTED_WITH_CONDITIONS",
+      "expected_features_triggered": [
+        "supersession_chain_resolution",
+        "current_version_identification",
+        "multi_condition_rule"
+      ],
+      "expected_citations": ["DS-001-v5"],
+      "expected_reasoning_notes": "DS-001-v5 is the current active version (effective 2026-06-01, no expiry), superseding DS-001-v4 and DS-001-v3. Under v5: approved vendors may receive Dataset Y provided they hold a current DPA AND have completed annual security certification. Both conditions must be satisfied.",
+      "scanner_conflicts": []
+    },
+    {
+      "scenario_id": "DEMO-004",
+      "name": "Regional Override — EU + Dataset Y + External Vendor",
+      "description": "Tests regional policy override on top of global policy. EU region adds SCC and CDO requirements.",
+      "question": "Can Finance share Dataset Y with Vendor Y in the EU region?",
+      "context": {
+        "vendor": "Vendor Y",
+        "department": "FINANCE",
+        "dataset": "Dataset Y",
+        "region": "EU",
+        "as_of_date": null
+      },
+      "expected_decision": "PERMITTED_WITH_CONDITIONS",
+      "expected_features_triggered": [
+        "regional_policy_override",
+        "multi_policy_intersection",
+        "eu_gdpr_scc_requirement",
+        "dual_approval_requirement"
+      ],
+      "expected_citations": ["VR-002", "REG-EU-001", "DEPT-FINANCE-001", "DS-001-v5"],
+      "expected_reasoning_notes": "Vendor Y is Tier 1 approved (VR-002). REG-EU-001 overrides global policy for EU: SCC required for Dataset Y. DEPT-FINANCE-001-S2 requires CFO + CDO dual approval for Finance to share Dataset Y. All three conditions (SCC + CFO + CDO) must be met. Legal and DPO review also required per REG-EU-001-S5.",
+      "scanner_conflicts": []
+    },
+    {
+      "scenario_id": "DEMO-005",
+      "name": "Waiver Path — Analytics + Dataset Y + Vendor Y",
+      "description": "Tests whether a waiver path exists. Analytics needs CDO approval for Dataset Y sharing.",
+      "question": "Can Analytics share Dataset Y with Vendor Y, and if not outright permitted, what is the remediation path?",
+      "context": {
+        "vendor": "Vendor Y",
+        "department": "ANALYTICS",
+        "dataset": "Dataset Y",
+        "region": null,
+        "as_of_date": null
+      },
+      "expected_decision": "PERMITTED_WITH_CONDITIONS",
+      "expected_features_triggered": [
+        "department_restriction",
+        "cdo_approval_required",
+        "waiver_path_identified",
+        "procedure_surfaced"
+      ],
+      "expected_citations": ["VR-002", "DS-001-v5", "DEPT-ANALYTICS-002", "PROC-APPROVAL", "WAI-DGC-001"],
+      "expected_reasoning_notes": "Vendor Y is Tier 1 approved. However, DS-001-v5-S3 and DEPT-ANALYTICS-002 require CDO express written approval for ALL Analytics Dataset Y sharing. Waiver path: submit Form CDO-APP-01 with risk assessment, await 5 business day response. If denied, DGC exception may be pursued via Form DGC-EXC-01.",
+      "scanner_conflicts": []
+    },
+    {
+      "scenario_id": "DEMO-006",
+      "name": "Hard Prohibition — No Remediation",
+      "description": "Tests that the HARD-PROHIB-001 provides absolutely no remediation path.",
+      "question": "Can we share any data with an entity on the Sanctioned Entity List?",
+      "context": {
+        "vendor": "sanctioned_entity",
+        "department": null,
+        "dataset": null,
+        "region": null,
+        "as_of_date": null
+      },
+      "expected_decision": "NOT_PERMITTED",
+      "expected_features_triggered": [
+        "hard_prohibition",
+        "no_remediation_path",
+        "non_waivable_restriction",
+        "mandatory_reporting_triggered"
+      ],
+      "expected_citations": ["HARD-PROHIB-001"],
+      "expected_reasoning_notes": "HARD-PROHIB-001 prohibits ALL data sharing with sanctioned entities across ALL datasets, departments, regions, and vendor types. This prohibition may not be waived by DGC or CDO. Any circumvention attempt must be reported to the Chief Compliance Officer immediately. No waiver path exists.",
+      "scanner_conflicts": ["CONFLICT-003 emergency protocol purports to allow any vendor — this directly conflicts and loses to HARD-PROHIB-001"]
+    },
+    {
+      "scenario_id": "DEMO-007",
+      "name": "Dataset Z — Vendor Z Post-Reclassification",
+      "description": "Tests how Vendor Z status change in DS-002-v2 affects Dataset Z access.",
+      "question": "Can Vendor Z receive Dataset Z after July 2026?",
+      "context": {
+        "vendor": "Vendor Z",
+        "department": null,
+        "dataset": "Dataset Z",
+        "region": null,
+        "as_of_date": "2026-08-01"
+      },
+      "expected_decision": "NOT_PERMITTED",
+      "expected_features_triggered": [
+        "vendor_tier_reclassification",
+        "temporal_policy_resolution",
+        "finance_exception_path"
+      ],
+      "expected_citations": ["DS-002-v2", "VR-003"],
+      "expected_reasoning_notes": "DS-002-v2 (effective 2026-07-01) deprecated Tier 2 vendor access to Dataset Z. Vendor Z was reclassified to Tier 2 status. Therefore Vendor Z may no longer receive Dataset Z without explicit Finance department approval. Without Finance approval, NOT_PERMITTED. Remediation: Finance may authorize via Vendor Exception Portal with CFO sign-off per VR-003.",
+      "scanner_conflicts": []
+    },
+    {
+      "scenario_id": "DEMO-008",
+      "name": "Conflict Detection — CONFLICT-001 vs VR-001",
+      "description": "Scanner scenario: CONFLICT-001 purports to allow Vendor X access to Dataset Z, conflicting with VR-001.",
+      "question": "Can Analytics Director approve Vendor X access to Dataset Z?",
+      "context": {
+        "vendor": "Vendor X",
+        "department": "ANALYTICS",
+        "dataset": "Dataset Z",
+        "region": null,
+        "as_of_date": null
+      },
+      "expected_decision": "NOT_PERMITTED",
+      "expected_features_triggered": [
+        "policy_conflict_detected",
+        "conflict_resolution",
+        "higher_authority_overrides",
+        "scanner_conflict_flag"
+      ],
+      "expected_citations": ["VR-001", "CONFLICT-001"],
+      "expected_reasoning_notes": "CONFLICT-001 creates an apparent override allowing Analytics Director to approve Vendor X for Dataset Z. However, VR-001 is a Compliance-level VENDOR_MANAGEMENT policy that restricts Vendor X across ALL data and ALL departments. CONFLICT-001 is a department-level DEPT_SPECIFIC policy and cannot override a Compliance-level vendor restriction. VR-001 prevails. Policy conflict should be flagged for review.",
+      "scanner_conflicts": ["CONFLICT-001 directly contradicts VR-001 — recommend escalation to Compliance for policy cleanup"]
+    },
+    {
+      "scenario_id": "DEMO-009",
+      "name": "Engineering Exception — Anonymized vs Raw",
+      "description": "Tests nuanced Engineering exception: anonymized data allowed, raw data blocked.",
+      "question": "Can Engineering share Dataset Y with a cloud vendor for performance testing?",
+      "context": {
+        "vendor": "cloud_infrastructure_vendor",
+        "department": "ENGINEERING",
+        "dataset": "Dataset Y",
+        "region": null,
+        "as_of_date": null,
+        "additional_context": "The data to be shared is anonymized Dataset Y"
+      },
+      "expected_decision": "PERMITTED_WITH_CONDITIONS",
+      "expected_features_triggered": [
+        "department_exception",
+        "data_form_distinction",
+        "cloud_vendor_exception"
+      ],
+      "expected_citations": ["DEPT-ENGINEERING-001"],
+      "expected_reasoning_notes": "DEPT-ENGINEERING-001-S1 permits Engineering to share anonymized Dataset Y with vendors for testing without approval. DEPT-ENGINEERING-001-S3 explicitly permits cloud infrastructure vendors with active contracts to receive anonymized Dataset Y for performance testing. Conditions: data must be anonymized (not raw), vendor must be a cloud infrastructure vendor with an active contract.",
+      "scanner_conflicts": []
+    },
+    {
+      "scenario_id": "DEMO-010",
+      "name": "India Regional + Vendor X + Dataset Y — Double Restriction",
+      "description": "Tests stacking of regional restriction (REG-INDIA-001) on top of already-prohibited vendor restriction (VR-001).",
+      "question": "Can India Analytics team share Dataset Y with Vendor X given the India data localization policy?",
+      "context": {
+        "vendor": "Vendor X",
+        "department": "ANALYTICS",
+        "dataset": "Dataset Y",
+        "region": "INDIA",
+        "as_of_date": null
+      },
+      "expected_decision": "NOT_PERMITTED",
+      "expected_features_triggered": [
+        "hard_vendor_block",
+        "regional_restriction_stacking",
+        "double_prohibition",
+        "non_waivable_restriction",
+        "conflict_002_partial_conflict"
+      ],
+      "expected_citations": ["VR-001", "DS-001-v5", "REG-INDIA-001", "CONFLICT-002"],
+      "expected_reasoning_notes": "Multiple layers of prohibition apply: (1) VR-001 prohibits Vendor X from Dataset Y globally, universally, non-waivably. (2) DS-001-v5-S2 reiterates this prohibition as non-waivable. (3) REG-INDIA-001-S3 explicitly calls out Vendor X restriction under VR-001 as additionally applicable in India. CONFLICT-002 creates an apparent exception for India Analytics domestic vendors, but Vendor X cannot be pre-approved per VR-001. Decision is NOT_PERMITTED with double-confirmed restriction. Scanner should flag CONFLICT-002 as potentially misleading.",
+      "scanner_conflicts": ["CONFLICT-002 suggests pre-approved domestic vendors may access Dataset Y but Vendor X cannot qualify as pre-approved given VR-001"]
+    }
+  ]
+}

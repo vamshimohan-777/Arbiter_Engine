@@ -1,0 +1,46 @@
+{
+  "policy_id": "HARD-PROHIB-001",
+  "title": "Sanctioned Entity Data Transfer Prohibition",
+  "version": "1.0",
+  "effective_date": "2025-01-01",
+  "expiry_date": null,
+  "region": null,
+  "department": null,
+  "vendor": null,
+  "dataset": null,
+  "category": "PROHIBITION",
+  "supersedes": [],
+  "sections": [
+    {
+      "section_id": "HARDPROHIBIT001-S1",
+      "clause_type": "RULE",
+      "text": "No data of any kind may be shared with entities on the Sanctioned Entity List maintained by the Compliance department.",
+      "metadata": {}
+    },
+    {
+      "section_id": "HARDPROHIBIT001-S2",
+      "clause_type": "RULE",
+      "text": "This prohibition applies to all datasets, all departments, all regions, and all vendor types without exception.",
+      "metadata": {}
+    },
+    {
+      "section_id": "HARDPROHIBIT001-S3",
+      "clause_type": "RULE",
+      "text": "This prohibition may not be waived under any circumstances, including by the Data Governance Committee, the Chief Data Officer, or any other executive authority.",
+      "metadata": {"non_waivable": true}
+    },
+    {
+      "section_id": "HARDPROHIBIT001-S4",
+      "clause_type": "RULE",
+      "text": "Any attempt to circumvent this prohibition must be reported to the Chief Compliance Officer immediately and constitutes grounds for disciplinary action.",
+      "metadata": {}
+    },
+    {
+      "section_id": "HARDPROHIBIT001-S5",
+      "clause_type": "DEFINITION",
+      "text": "Sanctioned Entity means any person, company, or organization listed on applicable government sanctions lists (OFAC SDN, EU Sanctions, UN Security Council) or the internal Compliance Watch List.",
+      "metadata": {}
+    }
+  ],
+  "source": "Compliance Policy Register — Mandatory Compliance Order MCO-2025-001"
+}

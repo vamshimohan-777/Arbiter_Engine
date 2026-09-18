@@ -1,0 +1,52 @@
+{
+  "policy_id": "DS-001-v5",
+  "title": "Data Sharing Policy",
+  "version": "5.0",
+  "effective_date": "2026-06-01",
+  "expiry_date": null,
+  "region": "GLOBAL",
+  "department": null,
+  "vendor": null,
+  "dataset": "Dataset Y",
+  "category": "DATA_SHARING",
+  "supersedes": ["DS-001-v4", "DS-001-v3", "DS-001-v2"],
+  "sections": [
+    {
+      "section_id": "DS001v5-S1",
+      "clause_type": "RULE",
+      "text": "Approved vendors may receive Dataset Y provided they hold a current Data Processing Agreement (DPA) and have completed annual security certification.",
+      "metadata": {}
+    },
+    {
+      "section_id": "DS001v5-S2",
+      "clause_type": "EXCEPTION",
+      "text": "Vendor X is prohibited from receiving Dataset Y under any circumstances. This restriction may not be waived.",
+      "metadata": {"applies_to_vendor": "Vendor X", "non_waivable": true}
+    },
+    {
+      "section_id": "DS001v5-S3",
+      "clause_type": "EXCEPTION",
+      "text": "The Analytics department may not share Dataset Y with any external vendor without express written approval from the Chief Data Officer.",
+      "metadata": {"applies_to_department": "ANALYTICS"}
+    },
+    {
+      "section_id": "DS001v5-S4",
+      "clause_type": "RULE",
+      "text": "Dataset Z may be shared with any Tier 1 Approved Vendor without additional approval.",
+      "metadata": {"applies_to_dataset": "Dataset Z"}
+    },
+    {
+      "section_id": "DS001v5-S5",
+      "clause_type": "PROCEDURE",
+      "text": "Exception requests for Dataset Y sharing may be submitted to the Data Governance Committee. Requests must include business justification, risk assessment, and DPA confirmation.",
+      "metadata": {}
+    },
+    {
+      "section_id": "DS001v5-S6",
+      "clause_type": "WAIVER",
+      "text": "A waiver for Dataset Y sharing may be granted by the Data Governance Committee provided: (1) the requesting department submits a formal exception request using Form DGC-EXC-01; (2) the vendor has no outstanding compliance violations; (3) the Chief Data Officer approves in writing. Waivers are valid for 12 months and must be renewed annually.",
+      "metadata": {"waiver_body": "Data Governance Committee", "approver": "Chief Data Officer"}
+    }
+  ],
+  "source": "Policy Registry v5.0 (2026-Q2)"
+}

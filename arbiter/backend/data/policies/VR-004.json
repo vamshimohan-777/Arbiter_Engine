@@ -1,0 +1,34 @@
+{
+  "policy_id": "VR-004",
+  "title": "Vendor A Approved Data Recipient Record",
+  "version": "1.0",
+  "effective_date": "2026-01-01",
+  "expiry_date": "2027-12-31",
+  "region": "INDIA",
+  "department": null,
+  "vendor": "Vendor A",
+  "dataset": "Dataset Y",
+  "category": "VENDOR_MANAGEMENT",
+  "supersedes": [],
+  "sections": [
+    {
+      "section_id": "VR004-S1",
+      "clause_type": "RULE",
+      "text": "Vendor A is an Approved Data Recipient and may receive Dataset Y subject to the current Data Sharing Policy.",
+      "metadata": {"applies_to_vendor": "Vendor A", "approved_data_recipient": true}
+    },
+    {
+      "section_id": "VR004-S2",
+      "clause_type": "RULE",
+      "text": "Vendor A holds a current Data Processing Agreement and annual security certification for Dataset Y.",
+      "metadata": {"dpa_current": true, "security_certification_current": true}
+    },
+    {
+      "section_id": "VR004-S3",
+      "clause_type": "RULE",
+      "text": "Vendor A maintains CERT-In certified data centers in India for India-sourced Dataset Y.",
+      "metadata": {"india_data_centers_certified": true}
+    }
+  ],
+  "source": "Approved Vendor Registry - Vendor A certification record (2026)"
+}

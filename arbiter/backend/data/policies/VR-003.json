@@ -1,0 +1,34 @@
+{
+  "policy_id": "VR-003",
+  "title": "Vendor Z Restricted Partner Policy",
+  "version": "1.0",
+  "effective_date": "2026-03-01",
+  "expiry_date": null,
+  "region": null,
+  "department": null,
+  "vendor": "Vendor Z",
+  "dataset": null,
+  "category": "VENDOR_MANAGEMENT",
+  "supersedes": [],
+  "sections": [
+    {
+      "section_id": "VR003-S1",
+      "clause_type": "RULE",
+      "text": "Vendor Z may receive Dataset Z only. Vendor Z is not authorized to receive Dataset Y or Dataset W under standard conditions.",
+      "metadata": {"applies_to_vendor": "Vendor Z"}
+    },
+    {
+      "section_id": "VR003-S2",
+      "clause_type": "EXCEPTION",
+      "text": "The Finance department may authorize Vendor Z to receive Dataset W for quarterly reporting purposes, subject to CFO written approval.",
+      "metadata": {"applies_to_department": "FINANCE", "applies_to_dataset": "Dataset W"}
+    },
+    {
+      "section_id": "VR003-S3",
+      "clause_type": "PROCEDURE",
+      "text": "Finance department requests for Vendor Z Dataset W access must be submitted via the Vendor Exception Portal (Form VEP-FIN-01) with CFO sign-off. Approved access is limited to the reporting period (maximum 30 days).",
+      "metadata": {}
+    }
+  ],
+  "source": "Vendor Management Register 2026-Q1"
+}

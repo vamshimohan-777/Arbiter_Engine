@@ -1,0 +1,40 @@
+{
+  "policy_id": "DEPT-ANALYTICS-001",
+  "title": "Analytics Department Data Sharing Rules",
+  "version": "2.0",
+  "effective_date": "2026-04-01",
+  "expiry_date": null,
+  "region": null,
+  "department": "ANALYTICS",
+  "vendor": null,
+  "dataset": null,
+  "category": "DEPT_SPECIFIC",
+  "supersedes": [],
+  "sections": [
+    {
+      "section_id": "DEPTANA001-S1",
+      "clause_type": "RULE",
+      "text": "The Analytics department may share Dataset Y and Dataset Z with Tier 1 Approved Vendors for analytical processing purposes.",
+      "metadata": {"applies_to_department": "ANALYTICS"}
+    },
+    {
+      "section_id": "DEPTANA001-S2",
+      "clause_type": "EXCEPTION",
+      "text": "The Analytics department may NOT share any dataset with Vendor X under any circumstances.",
+      "metadata": {"applies_to_vendor": "Vendor X"}
+    },
+    {
+      "section_id": "DEPTANA001-S3",
+      "clause_type": "RULE",
+      "text": "All Analytics data sharing activities must be logged in the Analytics Data Registry within 24 hours of the sharing event.",
+      "metadata": {}
+    },
+    {
+      "section_id": "DEPTANA001-S4",
+      "clause_type": "PROCEDURE",
+      "text": "Analytics data sharing requests must receive approval from the Analytics Director before submission to the Data Governance team.",
+      "metadata": {}
+    }
+  ],
+  "source": "Analytics Department Policy Handbook v2.0 (2026-Q2)"
+}

@@ -1,0 +1,28 @@
+{
+  "policy_id": "DEPT-ANALYTICS-002",
+  "title": "Analytics Department Dataset Y CDO Approval Requirement",
+  "version": "1.0",
+  "effective_date": "2026-06-01",
+  "expiry_date": null,
+  "region": null,
+  "department": "ANALYTICS",
+  "vendor": null,
+  "dataset": "Dataset Y",
+  "category": "DEPT_SPECIFIC",
+  "supersedes": [],
+  "sections": [
+    {
+      "section_id": "DEPTANA002-S1",
+      "clause_type": "OVERRIDE",
+      "text": "Notwithstanding DEPT-ANALYTICS-001, the Analytics department requires Chief Data Officer (CDO) written approval for ALL external sharing of Dataset Y, regardless of vendor tier status.",
+      "metadata": {"applies_to_department": "ANALYTICS", "applies_to_dataset": "Dataset Y"}
+    },
+    {
+      "section_id": "DEPTANA002-S2",
+      "clause_type": "EXCEPTION",
+      "text": "This CDO approval requirement does not apply to internal Analytics processing of Dataset Y where data remains within the department's systems.",
+      "metadata": {}
+    }
+  ],
+  "source": "Analytics Compliance Order ACO-2026-012"
+}

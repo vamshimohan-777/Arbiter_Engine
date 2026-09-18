@@ -1,0 +1,52 @@
+﻿{
+  "policy_id": "DEPT-ENGINEERING-001",
+  "title": "Engineering Department Data Sharing Rules",
+  "version": "1.0",
+  "effective_date": "2025-01-01",
+  "expiry_date": null,
+  "region": null,
+  "department": "ENGINEERING",
+  "vendor": null,
+  "dataset": null,
+  "category": "DEPT_SPECIFIC",
+  "supersedes": [],
+  "sections": [
+    {
+      "section_id": "DEPT-ENGINEERING-001-S1",
+      "clause_type": "RULE",
+      "text": "Engineering may share synthetic or anonymized Dataset Y with vendors for testing purposes without approval.",
+      "metadata": {
+        "applies_to_department": "ENGINEERING",
+        "applies_to_dataset": "Dataset Y",
+        "data_form": "synthetic or anonymized",
+        "purpose": "testing",
+        "approval_required": false
+      }
+    },
+    {
+      "section_id": "DEPT-ENGINEERING-001-S2",
+      "clause_type": "RULE",
+      "text": "Engineering may NOT share raw Dataset Y externally.",
+      "metadata": {
+        "applies_to_department": "ENGINEERING",
+        "applies_to_dataset": "Dataset Y",
+        "data_form": "raw",
+        "prohibition": true
+      }
+    },
+    {
+      "section_id": "DEPT-ENGINEERING-001-S3",
+      "clause_type": "EXCEPTION",
+      "text": "Cloud infrastructure vendors with active contracts may receive access to anonymized Dataset Y for performance testing.",
+      "metadata": {
+        "applies_to_department": "ENGINEERING",
+        "applies_to_dataset": "Dataset Y",
+        "data_form": "anonymized",
+        "vendor_type": "cloud infrastructure vendors",
+        "condition": "active contracts",
+        "purpose": "performance testing"
+      }
+    }
+  ],
+  "source": "Engineering Department Policy — Internal Governance v1.0 (effective 2025-01-01)"
+}

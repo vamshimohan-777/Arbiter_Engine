@@ -1,0 +1,46 @@
+{
+  "policy_id": "WAI-DGC-001",
+  "title": "Data Governance Committee Waiver Process",
+  "version": "1.0",
+  "effective_date": "2025-01-01",
+  "expiry_date": null,
+  "region": null,
+  "department": null,
+  "vendor": null,
+  "dataset": null,
+  "category": "WAIVER",
+  "supersedes": [],
+  "sections": [
+    {
+      "section_id": "WAIDGC001-S1",
+      "clause_type": "PROCEDURE",
+      "text": "The Data Governance Committee (DGC) may grant exceptions to data sharing restrictions on a case-by-case basis, subject to the conditions and process defined herein.",
+      "metadata": {}
+    },
+    {
+      "section_id": "WAIDGC001-S2",
+      "clause_type": "PROCEDURE",
+      "text": "DGC Exception Request Process: Step 1 - Submit DGC Exception Request Form (Form DGC-EXC-01) to governance@company.com with business justification and risk assessment. Step 2 - DGC reviews request within 10 business days at bi-weekly meeting. Step 3 - Legal department provides compliance review within 5 business days. Step 4 - Chief Data Officer provides final written approval or denial. Step 5 - Approved exceptions are logged in the Exception Registry with a 12-month validity period.",
+      "metadata": {"form": "DGC-EXC-01", "review_period_days": 10, "approver": "Chief Data Officer"}
+    },
+    {
+      "section_id": "WAIDGC001-S3",
+      "clause_type": "RULE",
+      "text": "DGC exceptions are time-limited and must be renewed annually. Renewal requests must be submitted 30 days before expiry.",
+      "metadata": {}
+    },
+    {
+      "section_id": "WAIDGC001-S4",
+      "clause_type": "EXCEPTION",
+      "text": "Exceptions may not be granted for policies explicitly marked as non-waivable (i.e., policies containing the phrase 'This restriction may not be waived').",
+      "metadata": {}
+    },
+    {
+      "section_id": "WAIDGC001-S5",
+      "clause_type": "DEFINITION",
+      "text": "Non-waivable policy means any policy section containing the explicit phrase: 'This restriction may not be waived.' Such restrictions cannot be overridden even by the DGC or CDO.",
+      "metadata": {}
+    }
+  ],
+  "source": "Data Governance Framework — DGC Charter 2025"
+}

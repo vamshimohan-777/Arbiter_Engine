@@ -1,0 +1,67 @@
+﻿{
+  "policy_id": "DEF-DATASETS",
+  "title": "Dataset Classification Definitions",
+  "version": "1.0",
+  "effective_date": "2024-01-01",
+  "expiry_date": null,
+  "region": null,
+  "department": null,
+  "vendor": null,
+  "dataset": null,
+  "category": "DATA_SHARING",
+  "supersedes": [],
+  "sections": [
+    {
+      "section_id": "DEF-DATASETS-S1",
+      "clause_type": "DEFINITION",
+      "text": "Dataset Y is classified as Confidential. Contains customer PII and financial data.",
+      "metadata": {
+        "defined_term": "Dataset Y",
+        "classification": "Confidential",
+        "data_types": ["customer PII", "financial data"]
+      }
+    },
+    {
+      "section_id": "DEF-DATASETS-S2",
+      "clause_type": "DEFINITION",
+      "text": "Dataset Z is classified as Internal. Contains aggregated analytics data, no direct PII.",
+      "metadata": {
+        "defined_term": "Dataset Z",
+        "classification": "Internal",
+        "data_types": ["aggregated analytics data"],
+        "pii_present": false
+      }
+    },
+    {
+      "section_id": "DEF-DATASETS-S3",
+      "clause_type": "DEFINITION",
+      "text": "Dataset W is classified as Restricted. Contains financial forecasting models and proprietary algorithms.",
+      "metadata": {
+        "defined_term": "Dataset W",
+        "classification": "Restricted",
+        "data_types": ["financial forecasting models", "proprietary algorithms"]
+      }
+    },
+    {
+      "section_id": "DEF-DATASETS-S4",
+      "clause_type": "DEFINITION",
+      "text": "Tier 1 Vendor: Vendors with Platinum/Gold status, passing annual SOC2 audit.",
+      "metadata": {
+        "defined_term": "Tier 1 Vendor",
+        "required_statuses": ["Platinum", "Gold"],
+        "audit_requirement": "annual SOC2"
+      }
+    },
+    {
+      "section_id": "DEF-DATASETS-S5",
+      "clause_type": "DEFINITION",
+      "text": "Tier 2 Vendor: Vendors with Silver status, passing biennial SOC2 audit.",
+      "metadata": {
+        "defined_term": "Tier 2 Vendor",
+        "required_statuses": ["Silver"],
+        "audit_requirement": "biennial SOC2"
+      }
+    }
+  ],
+  "source": "Data Governance Office — Dataset Classification Registry v1.0 (effective 2024-01-01)"
+}

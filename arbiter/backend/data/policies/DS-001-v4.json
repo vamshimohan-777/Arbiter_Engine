@@ -1,0 +1,46 @@
+{
+  "policy_id": "DS-001-v4",
+  "title": "Data Sharing Policy",
+  "version": "4.0",
+  "effective_date": "2026-01-01",
+  "expiry_date": "2026-05-31",
+  "region": "GLOBAL",
+  "department": null,
+  "vendor": null,
+  "dataset": "Dataset Y",
+  "category": "DATA_SHARING",
+  "supersedes": ["DS-001-v3", "DS-001-v2"],
+  "sections": [
+    {
+      "section_id": "DS001v4-S1",
+      "clause_type": "RULE",
+      "text": "Approved vendors may receive Dataset Y provided they hold a current Data Processing Agreement (DPA).",
+      "metadata": {}
+    },
+    {
+      "section_id": "DS001v4-S2",
+      "clause_type": "RULE",
+      "text": "Any transfer of Dataset Y to external vendors must receive prior written approval from the Data Owner.",
+      "metadata": {}
+    },
+    {
+      "section_id": "DS001v4-S3",
+      "clause_type": "EXCEPTION",
+      "text": "Vendor X is prohibited from receiving Dataset Y under any circumstances, regardless of DPA status.",
+      "metadata": {"applies_to_vendor": "Vendor X"}
+    },
+    {
+      "section_id": "DS001v4-S4",
+      "clause_type": "DEFINITION",
+      "text": "Approved Vendor means any vendor on the current Approved Vendor Registry, excluding vendors subject to specific restrictions.",
+      "metadata": {}
+    },
+    {
+      "section_id": "DS001v4-S5",
+      "clause_type": "PROCEDURE",
+      "text": "Exception requests for Dataset Y sharing may be submitted to the Data Governance Committee for review within 30 days of denial.",
+      "metadata": {}
+    }
+  ],
+  "source": "Policy Registry v4.0 (2026-Q1)"
+}

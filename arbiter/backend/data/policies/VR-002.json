@@ -1,0 +1,34 @@
+{
+  "policy_id": "VR-002",
+  "title": "Vendor Y Approved Partner Policy",
+  "version": "1.0",
+  "effective_date": "2025-01-01",
+  "expiry_date": null,
+  "region": null,
+  "department": null,
+  "vendor": "Vendor Y",
+  "dataset": null,
+  "category": "VENDOR_MANAGEMENT",
+  "supersedes": [],
+  "sections": [
+    {
+      "section_id": "VR002-S1",
+      "clause_type": "RULE",
+      "text": "Vendor Y holds Tier 1 Approved Partner status and may receive Dataset Y, Dataset Z, and Dataset W subject to applicable data sharing policies.",
+      "metadata": {"applies_to_vendor": "Vendor Y", "tier": "Tier 1"}
+    },
+    {
+      "section_id": "VR002-S2",
+      "clause_type": "RULE",
+      "text": "Vendor Y must maintain ISO 27001 certification and provide annual SOC2 audit reports to the Procurement team.",
+      "metadata": {}
+    },
+    {
+      "section_id": "VR002-S3",
+      "clause_type": "DEFINITION",
+      "text": "Vendor Y refers to DataStream Analytics Inc., a certified Tier 1 data processing partner.",
+      "metadata": {}
+    }
+  ],
+  "source": "Approved Vendor Registry (AVR-2025)"
+}

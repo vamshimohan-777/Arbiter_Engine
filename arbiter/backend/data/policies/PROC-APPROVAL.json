@@ -1,0 +1,62 @@
+﻿{
+  "policy_id": "PROC-APPROVAL",
+  "title": "Data Sharing Approval Procedures",
+  "version": "2.0",
+  "effective_date": "2026-01-01",
+  "expiry_date": null,
+  "region": null,
+  "department": null,
+  "vendor": null,
+  "dataset": null,
+  "category": "DATA_SHARING",
+  "supersedes": [],
+  "sections": [
+    {
+      "section_id": "PROC-APPROVAL-S1",
+      "clause_type": "PROCEDURE",
+      "text": "Standard approval: Submit Data Sharing Request Form (Form DSR-01) to Data Governance team.",
+      "metadata": {
+        "procedure_type": "standard approval",
+        "form": "DSR-01",
+        "submission_target": "Data Governance team"
+      }
+    },
+    {
+      "section_id": "PROC-APPROVAL-S2",
+      "clause_type": "PROCEDURE",
+      "text": "Expedited approval for Analytics Dataset Z: Analytics Director may approve within 24 hours.",
+      "metadata": {
+        "procedure_type": "expedited approval",
+        "applies_to_department": "ANALYTICS",
+        "applies_to_dataset": "Dataset Z",
+        "approver": "Analytics Director",
+        "turnaround_hours": 24
+      }
+    },
+    {
+      "section_id": "PROC-APPROVAL-S3",
+      "clause_type": "PROCEDURE",
+      "text": "CDO approval process: Submit Form CDO-APP-01 with completed risk assessment. Response within 5 business days.",
+      "metadata": {
+        "procedure_type": "CDO approval",
+        "form": "CDO-APP-01",
+        "required_attachments": ["completed risk assessment"],
+        "turnaround_business_days": 5,
+        "approver": "Chief Data Officer"
+      }
+    },
+    {
+      "section_id": "PROC-APPROVAL-S4",
+      "clause_type": "PROCEDURE",
+      "text": "DGC Exception process: Submit Form DGC-EXC-01. DGC meets biweekly. Response within 10 business days.",
+      "metadata": {
+        "procedure_type": "DGC exception",
+        "form": "DGC-EXC-01",
+        "dgc_meeting_frequency": "biweekly",
+        "turnaround_business_days": 10,
+        "cross_reference": "WAI-DGC-001"
+      }
+    }
+  ],
+  "source": "Data Governance Office — Approval Procedures Manual v2.0 (effective 2026-01-01)"
+}

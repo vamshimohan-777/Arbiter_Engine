@@ -1,0 +1,30 @@
+﻿{
+  "policy_id": "CONFLICT-003",
+  "title": "Temporary Dataset Y Emergency Access Protocol",
+  "version": "1.0",
+  "effective_date": "2026-09-01",
+  "expiry_date": null,
+  "region": null,
+  "department": null,
+  "vendor": null,
+  "dataset": null,
+  "category": "DATA_SHARING",
+  "supersedes": [],
+  "sections": [
+    {
+      "section_id": "CONFLICT-003-S1",
+      "clause_type": "EXCEPTION",
+      "text": "In declared emergencies (as defined by the CEO), Dataset Y may be shared with any vendor on an emergency basis for up to 72 hours.",
+      "metadata": {
+        "conflict_marker": true,
+        "conflicts_with": ["DS-001-v5", "VR-001", "HARD-PROHIB-001"],
+        "trigger": "CEO declared emergency",
+        "applies_to_dataset": "Dataset Y",
+        "vendor_scope": "any vendor",
+        "duration_hours": 72,
+        "scanner_note": "CRITICAL CONFLICT: 'any vendor' would include Vendor X, which is explicitly prohibited under DS-001-v5-S2 (non-waivable) and VR-001. Emergency protocols cannot override non-waivable restrictions or sanctioned entity prohibitions."
+      }
+    }
+  ],
+  "source": "Executive Emergency Protocols — Crisis Management Policy v1.0 (CONFLICT DOCUMENT — for policy scanner testing)"
+}

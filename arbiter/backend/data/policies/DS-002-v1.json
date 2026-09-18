@@ -1,0 +1,46 @@
+﻿{
+  "policy_id": "DS-002-v1",
+  "title": "Dataset Z Sharing Policy",
+  "version": "1.0",
+  "effective_date": "2025-01-01",
+  "expiry_date": null,
+  "region": null,
+  "department": null,
+  "vendor": null,
+  "dataset": "Dataset Z",
+  "category": "DATA_SHARING",
+  "supersedes": [],
+  "sections": [
+    {
+      "section_id": "DS-002-v1-S1",
+      "clause_type": "RULE",
+      "text": "Dataset Z may be shared with any Tier 1 or Tier 2 Approved Vendor.",
+      "metadata": {
+        "applies_to_dataset": "Dataset Z",
+        "permitted_vendor_tiers": ["Tier 1", "Tier 2"]
+      }
+    },
+    {
+      "section_id": "DS-002-v1-S2",
+      "clause_type": "RULE",
+      "text": "Dataset Z does not require DPA for sharing with Tier 1 vendors.",
+      "metadata": {
+        "applies_to_dataset": "Dataset Z",
+        "applies_to_vendor_tier": "Tier 1",
+        "dpa_required": false
+      }
+    },
+    {
+      "section_id": "DS-002-v1-S3",
+      "clause_type": "DEFINITION",
+      "text": "Tier 1 Vendor means vendors with Platinum or Gold partner status. Tier 2 Vendor means vendors with Silver partner status.",
+      "metadata": {
+        "defined_term": "Tier 1 Vendor",
+        "tier_1_statuses": ["Platinum", "Gold"],
+        "defined_term_2": "Tier 2 Vendor",
+        "tier_2_statuses": ["Silver"]
+      }
+    }
+  ],
+  "source": "Data Governance Office — Dataset Z Policy v1.0 (effective 2025-01-01, superseded by DS-002-v2 effective 2026-07-01)"
+}

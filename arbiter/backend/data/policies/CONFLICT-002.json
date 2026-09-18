@@ -1,0 +1,30 @@
+﻿{
+  "policy_id": "CONFLICT-002",
+  "title": "India Analytics Data Export Policy",
+  "version": "1.0",
+  "effective_date": "2026-08-01",
+  "expiry_date": null,
+  "region": "INDIA",
+  "department": "ANALYTICS",
+  "vendor": null,
+  "dataset": null,
+  "category": "DEPT_SPECIFIC",
+  "supersedes": [],
+  "sections": [
+    {
+      "section_id": "CONFLICT-002-S1",
+      "clause_type": "RULE",
+      "text": "Analytics department in India may share Dataset Y with pre-approved domestic vendors.",
+      "metadata": {
+        "conflict_marker": true,
+        "conflicts_with": ["DS-001-v5"],
+        "applies_to_department": "ANALYTICS",
+        "applies_to_region": "INDIA",
+        "applies_to_dataset": "Dataset Y",
+        "vendor_scope": "pre-approved domestic vendors",
+        "scanner_note": "This RULE potentially conflicts with DS-001-v5-S3 which requires CDO approval for ALL Analytics Dataset Y sharing to external vendors. A pre-approval process is not equivalent to CDO express written approval."
+      }
+    }
+  ],
+  "source": "Analytics India Regional Office — Data Export Policy v1.0 (CONFLICT DOCUMENT — for policy scanner testing)"
+}

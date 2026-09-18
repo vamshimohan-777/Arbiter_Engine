@@ -1,0 +1,40 @@
+{
+  "policy_id": "DEPT-FINANCE-001",
+  "title": "Finance Department Data Sharing Rules",
+  "version": "1.0",
+  "effective_date": "2025-01-01",
+  "expiry_date": null,
+  "region": null,
+  "department": "FINANCE",
+  "vendor": null,
+  "dataset": null,
+  "category": "DEPT_SPECIFIC",
+  "supersedes": [],
+  "sections": [
+    {
+      "section_id": "DEPTFIN001-S1",
+      "clause_type": "RULE",
+      "text": "The Finance department may share Dataset W with approved financial service vendors for audit and reporting purposes.",
+      "metadata": {"applies_to_department": "FINANCE"}
+    },
+    {
+      "section_id": "DEPTFIN001-S2",
+      "clause_type": "RULE",
+      "text": "The Finance department may NOT share Dataset Y with any external vendor without both CFO and CDO dual written approval.",
+      "metadata": {"applies_to_dataset": "Dataset Y"}
+    },
+    {
+      "section_id": "DEPTFIN001-S3",
+      "clause_type": "RULE",
+      "text": "Dataset Z sharing by Finance requires CFO written approval before any transfer.",
+      "metadata": {"applies_to_dataset": "Dataset Z"}
+    },
+    {
+      "section_id": "DEPTFIN001-S4",
+      "clause_type": "EXCEPTION",
+      "text": "Emergency financial reporting may proceed under expedited review with CFO sole approval if CDO is documented as unavailable for more than 48 hours.",
+      "metadata": {}
+    }
+  ],
+  "source": "Finance Department Policy Manual v1.0 (2025)"
+}

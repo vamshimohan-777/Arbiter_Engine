@@ -1,0 +1,40 @@
+{
+  "policy_id": "VR-001",
+  "title": "Vendor X Data Restriction Policy",
+  "version": "2.0",
+  "effective_date": "2025-06-01",
+  "expiry_date": null,
+  "region": null,
+  "department": null,
+  "vendor": "Vendor X",
+  "dataset": "Dataset Y",
+  "category": "VENDOR_MANAGEMENT",
+  "supersedes": ["VR-001-v1"],
+  "sections": [
+    {
+      "section_id": "VR001-S1",
+      "clause_type": "RULE",
+      "text": "Vendor X is prohibited from accessing, receiving, or processing Dataset Y.",
+      "metadata": {"applies_to_vendor": "Vendor X"}
+    },
+    {
+      "section_id": "VR001-S2",
+      "clause_type": "RULE",
+      "text": "This restriction applies across all departments, regions, and use cases.",
+      "metadata": {}
+    },
+    {
+      "section_id": "VR001-S3",
+      "clause_type": "RULE",
+      "text": "Any existing agreements with Vendor X that involve Dataset Y are hereby voided.",
+      "metadata": {}
+    },
+    {
+      "section_id": "VR001-S4",
+      "clause_type": "DEFINITION",
+      "text": "Vendor X refers to TechCorp Solutions Ltd and all its subsidiaries.",
+      "metadata": {}
+    }
+  ],
+  "source": "Vendor Management Register 2025-Q2 (Compliance Order CO-2025-042)"
+}

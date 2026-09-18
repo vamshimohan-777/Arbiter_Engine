@@ -1,0 +1,46 @@
+{
+  "policy_id": "REG-EU-001",
+  "title": "EU Data Sharing Restrictions (GDPR Compliance)",
+  "version": "2.0",
+  "effective_date": "2025-05-25",
+  "expiry_date": null,
+  "region": "EU",
+  "department": null,
+  "vendor": null,
+  "dataset": "Dataset Y",
+  "category": "REGIONAL",
+  "supersedes": [],
+  "sections": [
+    {
+      "section_id": "REGEU001-S1",
+      "clause_type": "OVERRIDE",
+      "text": "Notwithstanding the Global Data Sharing Policy, EU-based transfers of Dataset Y require explicit consent documentation and GDPR Article 46 compliance measures.",
+      "metadata": {"region": "EU"}
+    },
+    {
+      "section_id": "REGEU001-S2",
+      "clause_type": "RULE",
+      "text": "No Dataset Y containing EU resident personal data may be shared with any vendor without a Standard Contractual Clause (SCC) in place.",
+      "metadata": {}
+    },
+    {
+      "section_id": "REGEU001-S3",
+      "clause_type": "RULE",
+      "text": "EU data transfers are prohibited to vendors in non-adequacy countries unless SCCs or Binding Corporate Rules are established.",
+      "metadata": {}
+    },
+    {
+      "section_id": "REGEU001-S4",
+      "clause_type": "EXCEPTION",
+      "text": "The Analytics department may process EU-sourced Dataset Y internally without SCC but may not transfer to any external vendor without Legal and DPO approval.",
+      "metadata": {"applies_to_department": "ANALYTICS"}
+    },
+    {
+      "section_id": "REGEU001-S5",
+      "clause_type": "PROCEDURE",
+      "text": "EU data transfer requests must be reviewed by the Legal department and the Data Protection Officer (DPO) before any approval is granted. Review takes up to 15 business days.",
+      "metadata": {}
+    }
+  ],
+  "source": "Legal Compliance Register — EU GDPR Framework 2025"
+}

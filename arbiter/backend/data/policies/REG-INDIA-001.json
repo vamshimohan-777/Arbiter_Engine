@@ -1,0 +1,40 @@
+{
+  "policy_id": "REG-INDIA-001",
+  "title": "India Data Localization and Sharing Policy",
+  "version": "1.0",
+  "effective_date": "2025-09-01",
+  "expiry_date": null,
+  "region": "INDIA",
+  "department": null,
+  "vendor": null,
+  "dataset": "Dataset Y",
+  "category": "REGIONAL",
+  "supersedes": [],
+  "sections": [
+    {
+      "section_id": "REGINDIA001-S1",
+      "clause_type": "RULE",
+      "text": "Dataset Y containing India resident data must be stored on servers physically located in India.",
+      "metadata": {"region": "INDIA"}
+    },
+    {
+      "section_id": "REGINDIA001-S2",
+      "clause_type": "RULE",
+      "text": "Sharing of India-sourced Dataset Y with international vendors is permitted provided the vendor maintains India-based data centers certified under CERT-In guidelines.",
+      "metadata": {}
+    },
+    {
+      "section_id": "REGINDIA001-S3",
+      "clause_type": "EXCEPTION",
+      "text": "Vendor X is additionally restricted from receiving India-sourced Dataset Y under Vendor Restriction Policy VR-001, independent of the general data localization rules.",
+      "metadata": {"applies_to_vendor": "Vendor X"}
+    },
+    {
+      "section_id": "REGINDIA001-S4",
+      "clause_type": "OVERRIDE",
+      "text": "Where Indian data localization regulations conflict with the Global Data Sharing Policy, Indian regulations take precedence for India-sourced data.",
+      "metadata": {"region": "INDIA"}
+    }
+  ],
+  "source": "Legal Compliance Register — India DPDP Framework 2025"
+}
