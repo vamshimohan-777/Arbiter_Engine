@@ -1,0 +1,15 @@
+{
+  "name": "arbiter_engine",
+  "private": true,
+  "scripts": {
+    "dev": "next dev ./arbiter/frontend",
+    "build": "next build ./arbiter/frontend",
+    "start": "next start ./arbiter/frontend",
+    "lint": "next lint ./arbiter/frontend"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  }
+}
