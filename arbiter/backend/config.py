@@ -63,7 +63,9 @@ class Settings(BaseSettings):
     PRECEDENT_PROVIDER: str = Field(default="groq")
     SIMULATION_PROVIDER: str = Field(default="groq")
     LLM_TIMEOUT_SECONDS: float = Field(default=30.0, gt=0)
-    LLM_MAX_RETRIES: int = Field(default=3, ge=1, le=5)
+    # Provider fallback is more valuable than repeating the same failed
+    # request.  Each provider receives one attempt by default, in order.
+    LLM_MAX_RETRIES: int = Field(default=1, ge=1, le=5)
     LLM_RETRY_BACKOFF_SECONDS: float = Field(default=0.5, gt=0)
     LLM_CIRCUIT_BREAKER_FAILURES: int = Field(default=3, ge=1)
     LLM_PROVIDER_COOLDOWN_SECONDS: int = Field(default=30, ge=1)
@@ -71,6 +73,23 @@ class Settings(BaseSettings):
     # subsequent pipeline steps instead of consuming more failed requests.
     LLM_RATE_LIMIT_COOLDOWN_SECONDS: int = Field(default=60, ge=1)
     FRONTEND_ORIGIN: str = Field(default="http://localhost:3000")
+
+    # ------------------------------------------------------------------ #
+    # Authentication                                                       #
+    # ------------------------------------------------------------------ #
+    # Override this value in .env for every deployed environment. The
+    # default keeps local demo sessions usable without committing a secret.
+    JWT_SECRET_KEY: str = Field(default="arbiter-local-development-secret-change-me")
+    JWT_ALGORITHM: str = Field(default="HS256")
+    JWT_EXPIRATION_SECONDS: int = Field(default=8 * 60 * 60, gt=0)
+    AUTH_PASSWORD: Optional[str] = Field(
+        default=None,
+        description="Optional local/demo password override; never commit a real password.",
+    )
+    USERS_CONFIG_PATH: str = Field(
+        default="./data/users.json",
+        description="JSON user account file containing salted password hashes.",
+    )
 
     # ------------------------------------------------------------------ #
     # Agent Model Assignments                                              #

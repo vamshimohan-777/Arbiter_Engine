@@ -43,6 +43,7 @@ class RulingDecision(str, Enum):
     PERMITTED = "PERMITTED"
     NOT_PERMITTED = "NOT_PERMITTED"
     NEEDS_CLARIFICATION = "NEEDS_CLARIFICATION"
+    SERVICE_UNAVAILABLE = "SERVICE_UNAVAILABLE"
 
 
 class CheckerStatus(str, Enum):
@@ -166,6 +167,9 @@ class IdentityContext(BaseModel):
     role: str
     permissions: List[str] = Field(default_factory=list)
     status: str = "active"
+    # Returned only at sign-in so local cross-origin clients can restore a
+    # signed session when browser cookie handling is unavailable.
+    session_token: Optional[str] = None
 
 
 class Citation(BaseModel):
@@ -207,6 +211,9 @@ class Ruling(BaseModel):
     # orchestrator to avoid blocking a valid fallback ruling on optional
     # follow-up agents when the primary provider is unavailable.
     provider_fallback_used: bool = False
+    # True only when the decision was derived directly from structured policy
+    # evidence rather than from a generative provider response.
+    deterministic: bool = False
     timestamp: datetime = Field(default_factory=datetime.utcnow)
 
     model_config = {"use_enum_values": True}
@@ -467,6 +474,18 @@ class AskRequest(BaseModel):
     session_id: Optional[str] = None
 
 
+class AgentExecution(BaseModel):
+    """Non-sensitive provenance for one agent result shown in the UI."""
+
+    agent: str
+    outcome: str
+    provider: str
+    model: Optional[str] = None
+    status: str = "COMPLETED"
+    fallback_used: bool = False
+    calls: int = 1
+
+
 class FinalResponse(BaseModel):
     """Top-level response returned by the orchestrator and FastAPI /api/ask."""
 
@@ -481,6 +500,7 @@ class FinalResponse(BaseModel):
     remediation: Optional["RemediationResult"] = None
     graph_nodes: List["GraphNode"] = Field(default_factory=list)
     graph_edges: List["GraphEdge"] = Field(default_factory=list)
+    agent_executions: List[AgentExecution] = Field(default_factory=list)
     processing_time_ms: int = 0
     mode: str = "ASK"
 

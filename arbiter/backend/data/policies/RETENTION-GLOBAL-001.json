@@ -1,0 +1,32 @@
+{
+  "policy_id": "RETENTION-GLOBAL-001",
+  "title": "Customer Data Retention Policy",
+  "version": "1.0",
+  "effective_date": "2025-01-01",
+  "expiry_date": null,
+  "region": "GLOBAL",
+  "department": null,
+  "vendor": null,
+  "dataset": "Customer Data",
+  "category": "DATA_RETENTION",
+  "supersedes": [],
+  "sections": [
+    {
+      "section_id": "RETG001-S1",
+      "clause_type": "RULE",
+      "text": "Customer support records may be retained for 5 years.",
+      "metadata": {
+        "retention_period_years": 5,
+        "applies_to_dataset": "Customer Data",
+        "applies_to_department": "SUPPORT"
+      }
+    },
+    {
+      "section_id": "RETG001-S2",
+      "clause_type": "PROCEDURE",
+      "text": "At the end of the retention period, customer support records must be deleted or anonymized according to the approved records-disposal procedure.",
+      "metadata": {}
+    }
+  ],
+  "source": "Data Governance — Customer Data Retention Policy v1.0"
+}

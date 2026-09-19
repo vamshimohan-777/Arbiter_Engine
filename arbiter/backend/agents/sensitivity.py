@@ -54,6 +54,7 @@ class SensitivityAgent:
             # structured policy ruling contract as resolution, so a smaller
             # model should be an explicit deployment choice, not the default.
             model=settings.RESOLUTION_MODEL,
+            trace_role="sensitivity",
         )
         self._retrieval = RetrievalAgent(policy_store)
 
@@ -74,16 +75,14 @@ class SensitivityAgent:
         # Build perturbation list — only perturb fields that were specified
         perturbations: List[tuple[str, Optional[str], str]] = []  # (field, orig, new)
 
-        # Targeted perturbation: flip the primary entity for instant sensitivity check
-        if context.vendor:
-            alt = "Vendor Y" if "vendor x" in context.vendor.lower() else "Vendor X"
-            perturbations.append(("vendor", context.vendor, alt))
-        elif context.region:
-            alt = "US" if "eu" in context.region.lower() else "EU"
-            perturbations.append(("region", context.region, alt))
-        elif context.department:
-            alt = "Finance" if "analytics" in context.department.lower() else "Analytics"
-            perturbations.append(("department", context.department, alt))
+        # Vendor, region, and department come from authenticated server-side
+        # identity.  Varying them produces a different principal, not a
+        # meaningful sensitivity signal for the current user.  Only probe the
+        # request-controlled dataset dimension.
+        if context.dataset:
+            alternatives = [item for item in _DATASET_ALTS if item.casefold() != context.dataset.casefold()]
+            if alternatives:
+                perturbations.append(("dataset", context.dataset, alternatives[0]))
 
         perturbations = perturbations[:1]
 
@@ -137,9 +136,12 @@ class SensitivityAgent:
                 f"'{nearest.original_value}' to '{nearest.new_value}' "
                 f"flips the ruling from {nearest.original_decision} to {nearest.new_decision}."
             )
+        elif not perturbations:
+            status = AnalysisStatus.NO_ELIGIBLE_CASES
+            summary = "Sensitivity analysis is not applicable: no request-controlled dataset was supplied."
         else:
             status = AnalysisStatus.SUCCESS
-            summary = "Ruling appears stable across tested context variations."
+            summary = "Ruling appears stable across tested request context variations."
 
         return SensitivityResult(
             ruling_id=original_ruling.ruling_id,

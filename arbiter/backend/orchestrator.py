@@ -43,10 +43,12 @@ from schemas import (
     GraphNode,
     Policy,
     PolicyContext,
+    PrecedentStatus,
     PrecedentResult,
     RemediationResult,
     Ruling,
     RulingDecision,
+    AnalysisStatus,
     ScanResult,
     SensitivityResult,
     SimulationChange,
@@ -146,7 +148,7 @@ async def node_resolve(state: ArbiterState) -> ArbiterState:
             **state,
             "draft_ruling": ruling,
             "checker_round": 0,
-            "degraded_mode": ruling.provider_fallback_used,
+            "degraded_mode": ruling.provider_fallback_used or ruling.deterministic,
         }
     except Exception as exc:
         logger.error("Resolution failed: %s", exc)
@@ -238,7 +240,15 @@ async def node_precedent(state: ArbiterState) -> ArbiterState:
         return {**state, "precedent_result": result}
     except Exception as exc:
         logger.error("Precedent lookup failed: %s", exc)
-        return state
+        return {
+            **state,
+            "precedent_result": PrecedentResult(
+                has_precedent=False,
+                matches=[],
+                summary="Historical consistency could not be verified.",
+                status=PrecedentStatus.CHECK_UNAVAILABLE,
+            ),
+        }
 
 
 async def node_sensitivity(state: ArbiterState) -> ArbiterState:
@@ -256,7 +266,17 @@ async def node_sensitivity(state: ArbiterState) -> ArbiterState:
         return {**state, "sensitivity_result": result}
     except Exception as exc:
         logger.error("Sensitivity analysis failed: %s", exc)
-        return state
+        return {
+            **state,
+            "sensitivity_result": SensitivityResult(
+                ruling_id=final.ruling_id,
+                flips=[],
+                is_fragile=False,
+                summary="Sensitivity analysis could not be completed.",
+                total_perturbations_tested=0,
+                status=AnalysisStatus.CHECK_UNAVAILABLE,
+            ),
+        }
 
 
 async def node_remediation(state: ArbiterState) -> ArbiterState:
@@ -307,11 +327,11 @@ def route_after_clarification(state: ArbiterState) -> str:
 
 
 def route_after_resolve(state: ArbiterState) -> str:
-    # A valid fallback ruling is more useful than timing out while waiting for
-    # several optional model calls.  It is returned immediately and clearly
-    # marked as having deferred those supporting analyses.
-    if state.get("degraded_mode"):
-        return "finalize"
+    # A fallback-model ruling is still a ruling.  It must receive the same
+    # adversarial, precedent, sensitivity, and remediation opportunities as a
+    # primary-model ruling.  Each supporting agent has its own bounded linear
+    # provider fallback and reports CHECK_UNAVAILABLE when neither provider
+    # can complete, rather than silently disappearing from the result.
     return "check"
 
 
@@ -337,8 +357,6 @@ def route_after_revise(state: ArbiterState) -> str:
 
 def route_after_finalize(state: ArbiterState) -> str:
     final = state.get("final_ruling")
-    if state.get("degraded_mode"):
-        return "save_ruling"
     if final and final.decision == RulingDecision.NOT_PERMITTED:
         return "remediation"
     return "precedent"
@@ -447,11 +465,17 @@ def _enrich_context_from_question(question: str, context: PolicyContext) -> Poli
 
     # Dataset extraction
     if not ctx_dict.get("dataset"):
-        m = re.search(r"\b(Dataset\s+[A-Za-z0-9_-]+|operational logs|employee data|financial records)\b", q, re.IGNORECASE)
+        m = re.search(
+            r"\b(Dataset\s+[A-Za-z0-9_-]+|customer data|operational logs|employee data|financial records)\b",
+            q,
+            re.IGNORECASE,
+        )
         if m:
             val = m.group(1)
             if val.lower().startswith("dataset"):
                 val = val.title()
+            elif val.casefold() == "customer data":
+                val = "Customer Data"
             ctx_dict["dataset"] = val
 
     return PolicyContext(**ctx_dict)
@@ -538,10 +562,10 @@ class ArbiterOrchestrator:
                 ruling_id=str(uuid.uuid4()),
                 question=question,
                 context=enriched_context,
-                decision=RulingDecision.NEEDS_CLARIFICATION,
+                decision=RulingDecision.SERVICE_UNAVAILABLE,
                 explanation=(
-                    "The policy analysis could not be completed. Please retry; "
-                    "no unverified ruling has been issued."
+                    "The policy reasoning service is temporarily unavailable. "
+                    "No ruling has been issued; please retry shortly."
                 ),
                 citations=[],
                 relevant_policy_ids=[],
@@ -580,8 +604,11 @@ class ArbiterOrchestrator:
                 ruling_id=str(uuid.uuid4()),
                 question=question,
                 context=context,
-                decision=RulingDecision.NEEDS_CLARIFICATION,
-                explanation=f"Pipeline error: {final_state.get('error', 'unknown')}",
+                decision=RulingDecision.SERVICE_UNAVAILABLE,
+                explanation=(
+                    "The policy reasoning service is temporarily unavailable. "
+                    "No ruling has been issued; please retry shortly."
+                ),
                 citations=[],
                 relevant_policy_ids=[],
                 confidence=0.0,

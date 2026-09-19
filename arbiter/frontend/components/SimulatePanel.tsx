@@ -3,15 +3,6 @@
 import { useState, useEffect } from 'react'
 import type { SimulationChange } from '@/lib/types'
 
-// Default questions always sent so simulation always has something to test
-const DEFAULT_TEST_QUESTIONS = [
-  'Can Analytics share Dataset Y with Vendor X in India today?',
-  'Can Engineering share Dataset Y with Vendor X for testing?',
-  'Can Analytics share Dataset Y with Vendor Y in the EU?',
-  'Can Finance share Dataset W with Vendor Z?',
-  'Can Analytics share Dataset Z with Vendor Y?',
-]
-
 const CHANGE_TYPES = [
   { value: 'REMOVE_EXCEPTION', label: 'Remove Exception / Prohibition' },
   { value: 'ADD_EXCEPTION', label: 'Add Exception / Permit' },
@@ -22,7 +13,7 @@ const CHANGE_TYPES = [
 
 interface Props {
   initialChange?: SimulationChange | null
-  onSimulate: (change: SimulationChange, testQuestions: string[]) => void
+  onSimulate: (change: SimulationChange, testQuestions?: string[]) => void
   isLoading: boolean
 }
 
@@ -54,25 +45,25 @@ export default function SimulatePanel({ initialChange, onSimulate, isLoading }: 
         target_policy_id: targetPolicyId.trim() || undefined,
         new_text: newText.trim() || undefined,
       },
-      DEFAULT_TEST_QUESTIONS
+      undefined
     )
   }
 
   return (
-    <div className="bg-blue-950 border border-blue-800 rounded-xl p-5 mb-4">
+    <div className="glass-panel mx-auto max-w-3xl rounded-[28px] border border-blue-100 p-6">
       <div className="flex items-center gap-2 mb-4">
-        <span className="text-blue-400">⚡</span>
-        <h3 className="text-sm font-semibold text-blue-300">What-If Simulation</h3>
-        <span className="ml-auto text-xs text-blue-700">Does NOT modify real policies</span>
+        <span className="text-blue-600">⚡</span>
+        <h3 className="text-sm font-semibold text-slate-800">What-If Simulation</h3>
+        <span className="ml-auto text-xs text-slate-500">Does not modify real policies</span>
       </div>
 
       <div className="space-y-3">
         <div>
-          <label className="block text-xs text-blue-400 mb-1">Change Type</label>
+          <label className="mb-1 block text-xs font-semibold text-slate-600">Change type</label>
           <select
             value={changeType}
             onChange={(e) => setChangeType(e.target.value)}
-            className="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-sm text-neutral-200 focus:outline-none focus:border-blue-600"
+            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:border-blue-400"
           >
             {CHANGE_TYPES.map((t) => (
               <option key={t.value} value={t.value}>
@@ -83,54 +74,54 @@ export default function SimulatePanel({ initialChange, onSimulate, isLoading }: 
         </div>
 
         <div>
-          <label className="block text-xs text-blue-400 mb-1">
-            Description <span className="text-blue-700">(required)</span>
+          <label className="mb-1 block text-xs font-semibold text-slate-600">
+            Description <span className="text-slate-400">(required)</span>
           </label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="e.g. Remove the Vendor X restriction from DS-001-v5 Section S2"
+            placeholder="Describe the hypothetical policy action"
             rows={3}
-            className="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-sm text-neutral-200 placeholder-neutral-600 focus:outline-none focus:border-blue-600 resize-none"
+            className="w-full resize-none rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 outline-none placeholder:text-slate-400 focus:border-blue-400"
           />
         </div>
 
         <div>
-          <label className="block text-xs text-blue-400 mb-1">
-            Target Policy ID <span className="text-blue-700">(optional)</span>
+          <label className="mb-1 block text-xs font-semibold text-slate-600">
+            Target policy ID <span className="text-slate-400">(optional)</span>
           </label>
           <input
             type="text"
             value={targetPolicyId}
             onChange={(e) => setTargetPolicyId(e.target.value)}
-            placeholder="e.g. DS-001-v5"
-            className="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-sm text-neutral-200 placeholder-neutral-600 focus:outline-none focus:border-blue-600"
+            placeholder="Policy identifier"
+            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 outline-none placeholder:text-slate-400 focus:border-blue-400"
           />
         </div>
 
         {(changeType === 'ADD_EXCEPTION' || changeType === 'MODIFY_RULE' || changeType === 'ADD_POLICY') && (
           <div>
-            <label className="block text-xs text-blue-400 mb-1">
-              New Rule / Exception Text
+            <label className="mb-1 block text-xs font-semibold text-slate-600">
+              New rule / exception text
             </label>
             <textarea
               value={newText}
               onChange={(e) => setNewText(e.target.value)}
-              placeholder="Text of the new rule or exception clause..."
+              placeholder="Enter the proposed policy wording"
               rows={3}
-              className="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-sm text-neutral-200 placeholder-neutral-600 focus:outline-none focus:border-blue-600 resize-none"
+              className="w-full resize-none rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 outline-none placeholder:text-slate-400 focus:border-blue-400"
             />
           </div>
         )}
 
-        <p className="text-xs text-blue-800">
-          Will test against {DEFAULT_TEST_QUESTIONS.length} standard policy questions
+        <p className="text-xs leading-relaxed text-slate-500">
+          Simulation evaluates relevant historical rulings; it never changes the loaded policy corpus.
         </p>
 
         <button
           onClick={handleSubmit}
           disabled={isLoading || !description.trim()}
-          className="w-full py-2.5 bg-blue-700 hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg text-sm text-white font-medium transition-colors"
+          className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-teal-500 py-2.5 text-sm font-semibold text-white shadow-md shadow-blue-200 transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isLoading ? 'Running simulation…' : 'Run Simulation'}
         </button>

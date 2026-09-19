@@ -9,6 +9,7 @@ const ACCOUNTS = [
   { vendor: 'Vendor X', username: 'vendor-x-security', label: 'Vendor X · India · Security' },
   { vendor: 'Vendor Y', username: 'vendor-y-analyst', label: 'Vendor Y · US · Analytics' },
   { vendor: 'Vendor Y', username: 'vendor-y-finance-eu', label: 'Vendor Y · EU · Finance' },
+  { vendor: 'Internal Operations', username: 'eu-support-analyst', label: 'Internal Operations · EU · Support' },
 ]
 
 export default function LoginScreen({
@@ -17,7 +18,7 @@ export default function LoginScreen({
   onLogin: (username: string, password: string, vendor: string) => Promise<IdentityContext>
 }) {
   const [selected, setSelected] = useState(ACCOUNTS[0])
-  const [password, setPassword] = useState('arbiter-demo')
+  const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
@@ -35,30 +36,30 @@ export default function LoginScreen({
   }
 
   return (
-    <main className="min-h-screen bg-neutral-950 text-neutral-100 grid place-items-center p-5">
-      <form onSubmit={submit} className="w-full max-w-md rounded-2xl border border-neutral-800 bg-neutral-900 p-7 shadow-2xl">
-        <p className="text-3xl mb-2">⚖</p>
-        <h1 className="text-xl font-bold">Arbiter</h1>
-        <p className="text-sm text-neutral-500 mt-1">Sign in to establish your trusted policy context.</p>
+    <main className="grid min-h-screen place-items-center p-5">
+      <form onSubmit={submit} className="glass-panel w-full max-w-md rounded-[30px] p-8">
+        <div className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-blue-600 to-teal-400 text-xl font-black text-white shadow-lg shadow-blue-200">A</div>
+        <h1 className="mt-5 text-xl font-bold text-slate-900">Arbiter</h1>
+        <p className="mt-1 text-sm text-slate-500">Sign in to establish your trusted policy context.</p>
 
-        <label className="block text-xs font-semibold text-neutral-400 mt-7 mb-1.5">Demo account</label>
+        <label className="mb-1.5 mt-7 block text-xs font-semibold text-slate-600">Demo account</label>
         <select
           value={selected.username}
           onChange={(event) => setSelected(ACCOUNTS.find((a) => a.username === event.target.value) ?? ACCOUNTS[0])}
-          className="w-full rounded-lg bg-neutral-800 border border-neutral-700 p-3 text-sm"
+          className="w-full rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-700 outline-none focus:border-blue-400"
         >
           {ACCOUNTS.map((account) => <option key={account.username} value={account.username}>{account.label}</option>)}
         </select>
 
-        <label className="block text-xs font-semibold text-neutral-400 mt-4 mb-1.5">Username</label>
-        <input value={selected.username} readOnly className="w-full rounded-lg bg-neutral-800 border border-neutral-700 p-3 text-sm text-neutral-400" />
-        <label className="block text-xs font-semibold text-neutral-400 mt-4 mb-1.5">Password</label>
-        <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} className="w-full rounded-lg bg-neutral-800 border border-neutral-700 p-3 text-sm" />
-        {error && <p className="mt-3 text-xs text-red-300">{error}</p>}
-        <button disabled={loading} className="w-full mt-6 rounded-lg bg-blue-700 hover:bg-blue-600 disabled:opacity-50 p-3 text-sm font-semibold">
+        <label className="mb-1.5 mt-4 block text-xs font-semibold text-slate-600">Username</label>
+        <input value={selected.username} readOnly className="w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-500" />
+        <label className="mb-1.5 mt-4 block text-xs font-semibold text-slate-600">Password</label>
+        <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} required placeholder="Enter account password" className="w-full rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-700 outline-none focus:border-blue-400" />
+        {error && <p className="mt-3 text-xs text-rose-600">{error}</p>}
+        <button disabled={loading} className="mt-6 w-full rounded-xl bg-gradient-to-r from-blue-600 to-teal-500 p-3 text-sm font-semibold text-white shadow-md shadow-blue-200 disabled:opacity-50">
           {loading ? 'Signing in…' : 'Sign in'}
         </button>
-        <p className="mt-4 text-xs text-neutral-600">Demo password for all accounts: <span className="font-mono">arbiter-demo</span></p>
+        <p className="mt-4 text-xs text-slate-500">Credentials are validated against the server-side account store.</p>
       </form>
     </main>
   )

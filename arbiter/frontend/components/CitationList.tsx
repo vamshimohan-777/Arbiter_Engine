@@ -1,14 +1,14 @@
 import type { Citation } from '@/lib/types'
 
 const CLAUSE_COLORS: Record<string, string> = {
-  RULE: 'bg-blue-900 text-blue-200 border-blue-700',
-  EXCEPTION: 'bg-orange-900 text-orange-200 border-orange-700',
-  OVERRIDE: 'bg-purple-900 text-purple-200 border-purple-700',
-  WAIVER: 'bg-green-900 text-green-200 border-green-700',
-  RESTRICTION: 'bg-red-900 text-red-200 border-red-700',
-  PERMISSION: 'bg-emerald-900 text-emerald-200 border-emerald-700',
-  DEFINITION: 'bg-neutral-800 text-neutral-300 border-neutral-600',
-  PROCEDURE: 'bg-teal-900 text-teal-200 border-teal-700',
+  RULE: 'bg-blue-50 text-blue-700 border-blue-200',
+  EXCEPTION: 'bg-orange-50 text-orange-700 border-orange-200',
+  OVERRIDE: 'bg-purple-50 text-purple-700 border-purple-200',
+  WAIVER: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+  RESTRICTION: 'bg-rose-50 text-rose-700 border-rose-200',
+  PERMISSION: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+  DEFINITION: 'bg-slate-100 text-slate-600 border-slate-200',
+  PROCEDURE: 'bg-teal-50 text-teal-700 border-teal-200',
 }
 
 export default function CitationList({ citations }: { citations: Citation[] }) {
@@ -18,24 +18,24 @@ export default function CitationList({ citations }: { citations: Citation[] }) {
       {citations.map((c, i) => (
         <div
           key={i}
-          className="rounded-lg bg-neutral-900 border border-neutral-800 p-3"
+          className="rounded-2xl border border-slate-200 bg-white/75 p-4 shadow-sm"
         >
           <div className="flex items-center gap-2 flex-wrap mb-2">
             {c.clause_type && (
               <span
                 className={`text-xs px-2 py-0.5 rounded border font-mono ${
-                  CLAUSE_COLORS[c.clause_type] ?? 'bg-neutral-800 text-neutral-300 border-neutral-600'
+                  CLAUSE_COLORS[c.clause_type] ?? 'bg-slate-100 text-slate-600 border-slate-200'
                 }`}
               >
                 {c.clause_type}
               </span>
             )}
-            <span className="text-xs text-neutral-400 font-mono">{c.policy_id}</span>
+            <span className="text-xs font-mono text-slate-700">{c.policy_id}</span>
             {c.section_id && (
-              <span className="text-xs text-neutral-600">§{c.section_id}</span>
+              <span className="text-xs text-slate-400">§{c.section_id}</span>
             )}
           </div>
-          <p className="text-xs text-neutral-300 italic">
+          <p className="text-xs italic leading-relaxed text-slate-600">
             &ldquo;{c.text_excerpt}&rdquo;
           </p>
         </div>

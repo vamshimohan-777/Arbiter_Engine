@@ -17,6 +17,7 @@ from pydantic import BaseModel, ValidationError
 
 from config import settings
 from utils import parse_llm_json
+from .execution_trace import record_provider_call
 from .schemas import LLMErrorType, LLMGatewayResult, ProviderHealth
 
 logger = logging.getLogger(__name__)
@@ -99,7 +100,7 @@ class LLMGateway:
                         "llm_call request_id=%s role=%s provider=%s model=%s attempts=%d fallback=%s latency_ms=%d status=success",
                         request_id, role, provider, model, attempts, provider_index > 0, latency,
                     )
-                    return LLMGatewayResult(
+                    result = LLMGatewayResult(
                         success=True,
                         request_id=request_id,
                         provider_used=provider,
@@ -109,6 +110,14 @@ class LLMGateway:
                         latency_ms=latency,
                         payload=payload,
                     )
+                    record_provider_call(
+                        role=role,
+                        provider=result.provider_used,
+                        model=result.model_used,
+                        success=result.success,
+                        fallback_used=result.fallback_used,
+                    )
+                    return result
                 except Exception as exc:
                     error_type = self._classify_error(exc)
                     latency = int((time.perf_counter() - started) * 1000)
@@ -132,19 +141,34 @@ class LLMGateway:
                         request_id, role, provider, model, attempt, provider_index > 0, latency,
                         error_type.value, self._safe_error_message(exc),
                     )
-                    # A rate limit is not improved by immediately sending the
-                    # same request again.  Move to the fallback provider now;
-                    # the gateway remains the only retry owner.
-                    if error_type == LLMErrorType.RATE_LIMIT:
+                    # Provider failures are not improved by immediately
+                    # repeating the same request. Move linearly to the next
+                    # configured provider; the gateway remains the sole
+                    # owner of this fallback chain.
+                    if error_type in {
+                        LLMErrorType.RATE_LIMIT,
+                        LLMErrorType.CONNECTION_ERROR,
+                        LLMErrorType.TIMEOUT,
+                        LLMErrorType.SERVER_ERROR,
+                        LLMErrorType.PROVIDER_UNAVAILABLE,
+                    }:
                         break
                     if not self._is_retryable(error_type) or attempt == settings.LLM_MAX_RETRIES:
                         break
                     time.sleep(settings.LLM_RETRY_BACKOFF_SECONDS * (2 ** (attempt - 1)))
 
-        return last_failure or self._failure(
+        result = last_failure or self._failure(
             request_id, None, model, attempts, False,
             LLMErrorType.PROVIDER_UNAVAILABLE, "No LLM provider was available.",
         )
+        record_provider_call(
+            role=role,
+            provider=result.provider_used,
+            model=result.model_used,
+            success=result.success,
+            fallback_used=result.fallback_used,
+        )
+        return result
 
     def _client(self, provider: str, api_key: str, timeout_seconds: float) -> OpenAI:
         urls = {

@@ -16,6 +16,36 @@ import type {
 // cookies through its CORS middleware.
 const API_ORIGIN = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000').replace(/\/$/, '')
 const API_BASE = `${API_ORIGIN}/api`
+const TOKEN_STORAGE_KEY = 'arbiter_session_token'
+
+function getStoredToken(): string | null {
+  if (typeof window === 'undefined') return null
+  try {
+    return localStorage.getItem(TOKEN_STORAGE_KEY) || sessionStorage.getItem(TOKEN_STORAGE_KEY)
+  } catch {
+    return null
+  }
+}
+
+function setStoredToken(token: string | null) {
+  if (typeof window === 'undefined') return
+  try {
+    if (token) {
+      localStorage.setItem(TOKEN_STORAGE_KEY, token)
+      sessionStorage.setItem(TOKEN_STORAGE_KEY, token)
+    } else {
+      localStorage.removeItem(TOKEN_STORAGE_KEY)
+      sessionStorage.removeItem(TOKEN_STORAGE_KEY)
+    }
+  } catch {
+    // Browser storage may be unavailable in strict privacy modes.
+  }
+}
+
+function authHeaders(): Record<string, string> {
+  const token = getStoredToken()
+  return token ? { Authorization: `Bearer ${token}`, 'X-Session-Token': token } : {}
+}
 
 async function handleResponse<T>(res: Response): Promise<T> {
   if (!res.ok) {
@@ -36,28 +66,40 @@ export async function login(
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password, vendor }),
   })
-  return handleResponse<IdentityContext>(res)
+  const identity = await handleResponse<IdentityContext>(res)
+  if (identity.session_token) setStoredToken(identity.session_token)
+  return identity
 }
 
 export async function currentIdentity(): Promise<IdentityContext | null> {
-  const res = await fetch(`${API_BASE}/auth/me`, { credentials: 'include' })
-  if (res.status === 401) return null
-  return handleResponse<IdentityContext>(res)
+  const res = await fetch(`${API_BASE}/auth/me`, { credentials: 'include', headers: authHeaders() })
+  if (res.status === 401) {
+    setStoredToken(null)
+    return null
+  }
+  const identity = await handleResponse<IdentityContext>(res)
+  if (identity.session_token) setStoredToken(identity.session_token)
+  return identity
 }
 
 export async function logout(): Promise<void> {
-  const res = await fetch(`${API_BASE}/auth/logout`, {
-    method: 'POST',
-    credentials: 'include',
-  })
-  if (!res.ok) throw new Error('Could not sign out')
+  try {
+    const res = await fetch(`${API_BASE}/auth/logout`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: authHeaders(),
+    })
+    if (!res.ok) throw new Error('Could not sign out')
+  } finally {
+    setStoredToken(null)
+  }
 }
 
 export async function askQuestion(request: AskRequest): Promise<FinalResponse> {
   const res = await fetch(`${API_BASE}/ask`, {
     method: 'POST',
     credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
     body: JSON.stringify(request),
   })
   return handleResponse<FinalResponse>(res)
@@ -73,7 +115,7 @@ export async function runSimulation(
     const res = await fetch(`${API_BASE}/simulate`, {
       method: 'POST',
       credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...authHeaders() },
       body: JSON.stringify({ change, test_questions: testQuestions }),
       signal: controller.signal,
     })

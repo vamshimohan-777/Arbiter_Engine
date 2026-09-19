@@ -1,6 +1,6 @@
 // lib/types.ts — TypeScript types matching backend schemas exactly
 
-export type RulingDecision = 'PERMITTED' | 'NOT_PERMITTED' | 'NEEDS_CLARIFICATION'
+export type RulingDecision = 'PERMITTED' | 'NOT_PERMITTED' | 'NEEDS_CLARIFICATION' | 'SERVICE_UNAVAILABLE'
 export type RemediationType = 'WAIVER' | 'SIMULATION'
 export type ClauseType = 'PERMISSION' | 'RESTRICTION' | 'EXCEPTION' | 'OVERRIDE' | 'WAIVER' | 'DEFINITION' | 'PROCEDURE' | 'RULE' | 'OTHER'
 export type RelationshipType = 'SUPERSEDES' | 'OVERRIDE' | 'EXCEPTION_TO' | 'REFERENCES' | 'CONFLICTS_WITH' | 'EXTENDS' | 'DERIVED_FROM'
@@ -27,6 +27,7 @@ export interface IdentityContext {
   role: string
   permissions: string[]
   status: string
+  session_token?: string
 }
 
 export interface Citation {
@@ -56,6 +57,7 @@ export interface Ruling {
   confidence: number
   caveats: string[]
   blocking_clause?: BlockingClause
+  deterministic: boolean
   timestamp: string
 }
 
@@ -217,8 +219,19 @@ export interface FinalResponse {
   remediation?: RemediationResult
   graph_nodes: GraphNode[]
   graph_edges: GraphEdge[]
+  agent_executions: AgentExecution[]
   processing_time_ms: number
   mode: string
+}
+
+export interface AgentExecution {
+  agent: string
+  outcome: string
+  provider: string
+  model?: string
+  status: 'COMPLETED' | 'UNAVAILABLE' | string
+  fallback_used: boolean
+  calls: number
 }
 
 export interface ChatMessage {

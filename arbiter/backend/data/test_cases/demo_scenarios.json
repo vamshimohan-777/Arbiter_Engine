@@ -4,6 +4,29 @@
   "created_date": "2026-09-18",
   "scenarios": [
     {
+      "scenario_id": "DEMO-RETENTION-001",
+      "name": "Regional Retention — EU Support",
+      "description": "Tests a regional and department-specific retention rule overriding a global retention baseline.",
+      "question": "How long can customer data be retained for the EU Support team?",
+      "context": {
+        "vendor": "Internal Operations",
+        "department": "SUPPORT",
+        "dataset": "Customer Data",
+        "region": "EU",
+        "as_of_date": null
+      },
+      "expected_decision": "PERMITTED",
+      "expected_answer": "2 years",
+      "expected_features_triggered": [
+        "regional_policy_override",
+        "department_specificity",
+        "retention_period_resolution"
+      ],
+      "expected_citations": ["REG-EU-RETENTION-001", "RETENTION-GLOBAL-001"],
+      "expected_reasoning_notes": "The EU Support rule sets a two-year maximum and is more specific than the five-year global retention baseline.",
+      "scanner_conflicts": []
+    },
+    {
       "scenario_id": "DEMO-001",
       "name": "Hard Vendor Block — Vendor X + Dataset Y",
       "description": "The clearest NOT_PERMITTED case. Vendor X is blocked from Dataset Y by both a global policy and a dedicated vendor restriction policy.",

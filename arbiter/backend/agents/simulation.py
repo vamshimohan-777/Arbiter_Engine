@@ -59,6 +59,7 @@ class SimulationAgent:
             policy_store,
             model=settings.SIMULATION_MODEL,
             provider=settings.SIMULATION_PROVIDER,
+            trace_role="simulation",
         )
         self._retrieval = RetrievalAgent(policy_store)
 

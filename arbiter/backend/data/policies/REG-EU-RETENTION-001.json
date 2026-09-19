@@ -1,0 +1,34 @@
+{
+  "policy_id": "REG-EU-RETENTION-001",
+  "title": "EU Support Customer Data Retention Requirement",
+  "version": "1.0",
+  "effective_date": "2025-01-01",
+  "expiry_date": null,
+  "region": "EU",
+  "department": "SUPPORT",
+  "vendor": null,
+  "dataset": "Customer Data",
+  "category": "REGIONAL_RETENTION",
+  "supersedes": [],
+  "sections": [
+    {
+      "section_id": "REGEURET001-S1",
+      "clause_type": "OVERRIDE",
+      "text": "For the EU Support team, customer data may be retained for no more than 2 years. This regional Support requirement takes precedence over the global Customer Data Retention Policy.",
+      "metadata": {
+        "retention_period_years": 2,
+        "applies_to_region": "EU",
+        "applies_to_department": "SUPPORT",
+        "applies_to_dataset": "Customer Data",
+        "overrides_policy_id": "RETENTION-GLOBAL-001"
+      }
+    },
+    {
+      "section_id": "REGEURET001-S2",
+      "clause_type": "PROCEDURE",
+      "text": "EU Support records approaching the two-year limit must be reviewed for deletion or lawful anonymization.",
+      "metadata": {}
+    }
+  ],
+  "source": "EU Data Governance — Support Retention Requirement v1.0"
+}

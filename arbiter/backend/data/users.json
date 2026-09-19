@@ -1,0 +1,80 @@
+[
+  {
+    "user_id": "demo-vendor-a-001",
+    "username": "vendor-a-analyst",
+    "display_name": "Vendor A Analyst",
+    "vendor": "Vendor A",
+    "region": "India",
+    "department": "Analytics",
+    "role": "Analyst",
+    "permissions": ["ask_policy"],
+    "status": "active",
+    "salt": "50ea3a834b054cd00aaf66a7978466c8",
+    "password_hash": "e2610466b9fbd5ab877a2d74858b863a7f11cab771fa63c49aee3f73a88eab4b"
+  },
+  {
+    "user_id": "demo-vendor-x-001",
+    "username": "vendor-x-analyst",
+    "display_name": "Vendor X Analyst",
+    "vendor": "Vendor X",
+    "region": "India",
+    "department": "Analytics",
+    "role": "Analyst",
+    "permissions": ["ask_policy"],
+    "status": "active",
+    "salt": "92a16285576045519db998b457f865d0",
+    "password_hash": "06b64e81fc1c0027ac1f4d7ee2bf04ec85e1fcb3b58c87bb144b06a466da7408"
+  },
+  {
+    "user_id": "demo-vendor-x-security-001",
+    "username": "vendor-x-security",
+    "display_name": "Vendor X Security Officer",
+    "vendor": "Vendor X",
+    "region": "India",
+    "department": "Security",
+    "role": "Security Officer",
+    "permissions": ["ask_policy"],
+    "status": "active",
+    "salt": "1333771858a86da0604f02dc437a9721",
+    "password_hash": "a9345fe23766fe19a661a2b8566c367db70ccc3bd3c4fac3fde7aaed4f13ce29"
+  },
+  {
+    "user_id": "demo-vendor-y-001",
+    "username": "vendor-y-analyst",
+    "display_name": "Vendor Y Analyst",
+    "vendor": "Vendor Y",
+    "region": "US",
+    "department": "Analytics",
+    "role": "Analyst",
+    "permissions": ["ask_policy"],
+    "status": "active",
+    "salt": "c20873c1728763993f59c11f76080db6",
+    "password_hash": "e72c7671523e0276e21514b0cf6504ff5d2a783347143002938b095781669a81"
+  },
+  {
+    "user_id": "demo-vendor-y-finance-eu-001",
+    "username": "vendor-y-finance-eu",
+    "display_name": "Vendor Y Finance Analyst",
+    "vendor": "Vendor Y",
+    "region": "EU",
+    "department": "Finance",
+    "role": "Analyst",
+    "permissions": ["ask_policy"],
+    "status": "active",
+    "salt": "90c6ea127b303bdd7f80c2a25019bd5f",
+    "password_hash": "66e854b505bb33062bebb37f0a3ea71d33d6b7ca3f98d80d8ff65f35d81e74d0"
+  },
+  {
+    "user_id": "demo-eu-support-001",
+    "username": "eu-support-analyst",
+    "display_name": "EU Support Retention Analyst",
+    "vendor": "Internal Operations",
+    "region": "EU",
+    "department": "Support",
+    "role": "Analyst",
+    "permissions": ["ask_policy"],
+    "status": "active",
+    "salt": "6e9961d9db0f47ea829e9c23f4ad98ca",
+    "password_hash": "2d680b2f6590fc2a78227e5a71fc1da7122e1f72de5fb058ccccb0e18ff5874f"
+  }
+]

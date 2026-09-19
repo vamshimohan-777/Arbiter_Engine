@@ -17,8 +17,8 @@ from __future__ import annotations
 
 import logging
 import os
-import re
 import sys
+import uuid
 from contextlib import asynccontextmanager
 from datetime import date
 from typing import List, Optional
@@ -30,11 +30,20 @@ from pydantic import BaseModel
 
 from config import settings
 from auth import authenticate, clear_session, create_session, current_identity
+from identity_boundary import identity_override_reason
 from orchestrator import ArbiterOrchestrator
+from providers.execution_trace import (
+    begin_request_trace,
+    current_request_trace,
+    end_request_trace,
+)
 from schemas import (
+    AgentExecution,
     FinalResponse,
     IdentityContext,
     PolicyContext,
+    Ruling,
+    RulingDecision,
     ScanResult,
     SimulationChange,
     SimulationResult,
@@ -163,27 +172,134 @@ def _check_ready() -> None:
         raise HTTPException(status_code=503, detail="Arbiter not initialized.")
 
 
-def _attempts_identity_override(question: str, identity: IdentityContext) -> bool:
-    """Detect a conflicting claimed identity for a transparent user notice.
+def _identity_override_response(
+    request: AskRequest,
+    context: PolicyContext,
+    identity: IdentityContext,
+    reason: str,
+) -> FinalResponse:
+    """Build a deterministic, non-LLM response for a rejected override."""
+    identity_summary = (
+        f"{identity.vendor}, {identity.region}, {identity.department}, {identity.role}"
+    )
+    explanation = (
+        f"{reason} Arbiter will only evaluate requests for the authenticated "
+        f"context ({identity_summary}). Sign in with the appropriate account "
+        "to request a ruling for a different vendor or department."
+    )
+    ruling = Ruling(
+        ruling_id=str(uuid.uuid4()),
+        question=request.question,
+        context=context,
+        decision=RulingDecision.NEEDS_CLARIFICATION,
+        explanation=explanation,
+        citations=[],
+        relevant_policy_ids=[],
+        confidence=1.0,
+        caveats=["No policy retrieval or language-model reasoning was performed."],
+    )
+    return FinalResponse(
+        session_id=request.session_id or str(uuid.uuid4()),
+        question=request.question,
+        context=context,
+        ruling=ruling,
+        processing_time_ms=0,
+        mode="ASK",
+    )
 
-    Detection is informational only: trusted context is already constructed
-    server-side before the orchestrator is invoked.
-    """
-    patterns = {
-        "vendor": r"\b(?:i am|i'm|use|treat me as)\s+(vendor\s+[\w-]+)",
-        "region": r"\b(?:use|treat me as)\s+(india|us|usa|eu|europe)\b",
-        "department": r"\b(?:i am|i'm|use|treat me as)\s+(analytics|security|finance|engineering)\b",
-    }
-    expected = {
-        "vendor": identity.vendor,
-        "region": identity.region,
-        "department": identity.department,
-    }
-    for field, pattern in patterns.items():
-        match = re.search(pattern, question, re.IGNORECASE)
-        if match and match.group(1).casefold() != expected[field].casefold():
-            return True
-    return False
+
+_ROLE_PRESENTATION = {
+    "resolution": ("Resolution Agent", "Policy ruling"),
+    "checker": ("Checker Agent", "Adversarial verification"),
+    "precedent": ("Precedent Agent", "Historical consistency check"),
+    "sensitivity": ("Sensitivity Agent", "Dataset decision-flip analysis"),
+    "simulation": ("Simulation Agent", "Hypothetical policy evaluation"),
+    "remediation": ("Remediation Agent", "Remediation analysis"),
+    "scanner": ("Corpus Scanner Agent", "Policy corpus scan"),
+}
+
+
+def _display_provider(provider: str) -> str:
+    return {"groq": "Groq", "openrouter": "OpenRouter", "cerebras": "Cerebras"}.get(
+        provider.casefold(), provider
+    )
+
+
+def _attach_execution_details(response: FinalResponse) -> FinalResponse:
+    """Add a concise, truthful execution trace to an API response."""
+    calls = current_request_trace()
+    identity_rejected = (
+        "No policy retrieval or language-model reasoning was performed."
+        in response.ruling.caveats
+    )
+    if identity_rejected:
+        executions: List[AgentExecution] = [
+            AgentExecution(
+                agent="Identity Boundary",
+                outcome="Authenticated context validation",
+                provider="Server-side rule",
+            )
+        ]
+    else:
+        executions = [
+            AgentExecution(
+                agent="Retrieval Agent",
+                outcome="Policy evidence retrieval",
+                provider="Local policy store",
+            )
+        ]
+        if response.clarification and not calls:
+            executions.append(
+                AgentExecution(
+                    agent="Resolution Agent",
+                    outcome="Context clarification",
+                    provider="Policy rule gate",
+                )
+            )
+        if response.ruling.deterministic:
+            executions.append(
+                AgentExecution(
+                    agent="Resolution Agent",
+                    outcome="Structured policy evaluation",
+                    provider="Local policy rules",
+                )
+            )
+
+    grouped = {}
+    for call in calls:
+        key = (
+            call["role"],
+            call["provider"],
+            call["model"],
+            call["success"],
+            call["fallback_used"],
+        )
+        grouped[key] = grouped.get(key, 0) + 1
+
+    for (role, provider, model, success, fallback_used), count in grouped.items():
+        agent, outcome = _ROLE_PRESENTATION.get(role, (f"{role.title()} Agent", role.title()))
+        executions.append(
+            AgentExecution(
+                agent=agent,
+                outcome=outcome,
+                provider=_display_provider(provider),
+                model=model,
+                status="COMPLETED" if success else "UNAVAILABLE",
+                fallback_used=fallback_used,
+                calls=count,
+            )
+        )
+
+    if response.sensitivity and not any(call["role"] == "sensitivity" for call in calls):
+        executions.append(
+            AgentExecution(
+                agent="Sensitivity Agent",
+                outcome="Nearby decision-flip analysis",
+                provider="Local orchestration",
+            )
+        )
+    response.agent_executions = executions
+    return response
 
 
 # ---------------------------------------------------------------------------
@@ -253,10 +369,10 @@ async def initialize():
 
 @app.post("/api/auth/login", response_model=IdentityContext)
 async def login(request: LoginRequest, response: Response):
-    """Create a demo session and return server-verified identity attributes."""
+    """Create a signed session and return server-verified identity attributes."""
     identity = authenticate(request.username, request.password, request.vendor)
-    create_session(response, identity)
-    return identity
+    token = create_session(response, identity)
+    return identity.model_copy(update={"session_token": token})
 
 
 @app.post("/api/auth/logout", status_code=204)
@@ -273,6 +389,7 @@ async def auth_me(request: Request):
 async def ask(request: AskRequest, http_request: Request):
     """Core policy ruling endpoint."""
     _check_ready()
+    trace_token = begin_request_trace()
     try:
         identity = current_identity(http_request)
         # The server, not the browser or natural language, controls these
@@ -285,24 +402,30 @@ async def ask(request: AskRequest, http_request: Request):
             dataset=request.context.dataset,
             additional_context=request.context.additional_context,
         )
+        override_reason = identity_override_reason(request.question, identity)
+        if override_reason:
+            logger.warning(
+                "Rejected policy identity override for user_id=%s: %s",
+                identity.user_id,
+                override_reason,
+            )
+            return _attach_execution_details(_identity_override_response(
+                request, trusted_context, identity, override_reason
+            ))
         response = await orchestrator.ask(  # type: ignore[union-attr]
             question=request.question,
             context=trusted_context,
             as_of_date=request.as_of_date,
             session_id=request.session_id,
         )
-        if _attempts_identity_override(request.question, identity):
-            response.ruling.caveats.append(
-                "Authenticated policy context is "
-                f"{identity.vendor}, {identity.region}, {identity.department}, {identity.role}; "
-                "identity cannot be changed from a message."
-            )
-        return response
+        return _attach_execution_details(response)
     except Exception as exc:
         if isinstance(exc, HTTPException):
             raise
         logger.exception("ASK pipeline error: %s", exc)
         raise HTTPException(status_code=500, detail=f"Policy reasoning failed: {exc}")
+    finally:
+        end_request_trace(trace_token)
 
 
 @app.post("/api/simulate", response_model=SimulationResult)

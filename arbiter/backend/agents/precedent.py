@@ -139,19 +139,27 @@ class PrecedentAgent:
             n_results=5,
         )
 
-        if not similar:
+        comparable = [p for p in similar if _is_comparable_context(p.context, context)]
+        if not comparable:
             logger.info("PrecedentAgent: no similar precedents found.")
             return PrecedentResult(
                 has_precedent=False,
                 matches=[],
                 is_consistent=None,
                 discrepancy_explanation=None,
-                consistency_explanation=None,
+                consistency_explanation=(
+                    "No prior ruling with the same authenticated vendor, region, "
+                    "and department was found."
+                ),
+                summary="No comparable historical precedent was found.",
                 status=PrecedentStatus.NO_RELEVANT_PRECEDENT,
             )
 
         # --- Step 2: Format and call LLM ---
-        formatted_precedents = _format_precedents(similar)
+        # The model receives only comparable contexts.  A different vendor or
+        # region may explain a different outcome, but it must never be shown
+        # to users as an inconsistent precedent signal.
+        formatted_precedents = _format_precedents(comparable)
 
         user_message = (
             f"Current Question: {question}\n"
@@ -176,7 +184,7 @@ class PrecedentAgent:
             )
             return PrecedentResult(
                 has_precedent=True,
-                matches=_build_matches(similar, []),
+                matches=_build_matches(comparable, []),
                 is_consistent=None,
                 consistency_explanation=None,
                 discrepancy_explanation=None,
@@ -188,13 +196,38 @@ class PrecedentAgent:
         # --- Step 3: Build PrecedentMatch objects ---
         relevant_ids: List[str] = _ensure_list_str(raw.get("relevant_precedents", []))
 
-        matches: List[PrecedentMatch] = _build_matches(similar, relevant_ids)
+        comparable_ids = {p.ruling_id for p in comparable}
+        relevant_ids = [ruling_id for ruling_id in relevant_ids if ruling_id in comparable_ids]
+        matches: List[PrecedentMatch] = _build_matches(comparable, relevant_ids)
+
+        # A provider must explicitly identify at least one comparable ruling
+        # before the result can become a positive or negative precedent signal.
+        if not relevant_ids:
+            return PrecedentResult(
+                has_precedent=False,
+                matches=matches,
+                is_consistent=None,
+                summary="No comparable historical precedent was selected.",
+                status=PrecedentStatus.NO_RELEVANT_PRECEDENT,
+            )
 
         # The gateway validates this required field before returning success.
         # Never allow a missing value to silently become "consistent".
         is_consistent: bool = bool(raw["is_consistent"])
         discrepancy_explanation: Optional[str] = raw.get("discrepancy_explanation") or None
         consistency_explanation: Optional[str] = raw.get("consistency_explanation") or None
+
+        # A different principal is not an inconsistency.  Guard against a
+        # provider returning this explanation even after the strict context
+        # filter above, so the UI never raises a false red precedent alert.
+        if not is_consistent and _explains_different_context(discrepancy_explanation):
+            return PrecedentResult(
+                has_precedent=False,
+                matches=matches,
+                is_consistent=None,
+                summary="The retrieved historical rulings use a different context.",
+                status=PrecedentStatus.NO_RELEVANT_PRECEDENT,
+            )
 
         logger.info(
             "PrecedentAgent: found=%d | relevant=%d | consistent=%s",
@@ -296,6 +329,48 @@ def _ensure_list_str(value: object) -> List[str]:
     if value is None:
         return []
     return [str(value)]
+
+
+def _is_comparable_context(candidate: object, current: PolicyContext) -> bool:
+    """Require the server-owned identity scope to match before comparison."""
+    if isinstance(candidate, PolicyContext):
+        candidate_values = candidate.model_dump()
+    elif isinstance(candidate, dict):
+        candidate_values = candidate
+    else:
+        return False
+
+    for field in ("vendor", "region", "department"):
+        current_value = getattr(current, field, None)
+        candidate_value = candidate_values.get(field)
+        if current_value and (
+            not candidate_value
+            or str(current_value).casefold().strip() != str(candidate_value).casefold().strip()
+        ):
+            return False
+
+    current_dataset = current.dataset
+    candidate_dataset = candidate_values.get("dataset")
+    if current_dataset and (
+        not candidate_dataset
+        or str(current_dataset).casefold().strip() != str(candidate_dataset).casefold().strip()
+    ):
+        return False
+    return True
+
+
+def _explains_different_context(explanation: Optional[str]) -> bool:
+    """Identify a non-comparable ruling explanation returned by a provider."""
+    text = (explanation or "").casefold()
+    return any(
+        phrase in text
+        for phrase in (
+            "different context",
+            "different vendor",
+            "different region",
+            "different department",
+        )
+    )
 
 
 def _strip_markdown_fences(text: str) -> str:
